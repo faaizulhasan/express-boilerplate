@@ -1,0 +1,489 @@
+{
+	"info": {
+		"_postman_id": "de8397d0-8218-4683-bc0e-447c603baf0d",
+		"name": "Boilerplate-Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34734045",
+		"_collection_link": "https://dark-astronaut-443381.postman.co/workspace/Eplanet~bc3f3bda-f97e-4a51-9589-0d94fa704fff/collection/34734045-de8397d0-8218-4683-bc0e-447c603baf0d?action=share&source=collection_link&creator=34734045"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Account",
+					"item": [
+						{
+							"name": "Create User",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstname\":\"Test\",\r\n    \"lastname\":\"Test\",\r\n    \"email\":\"test@yopmail.com\",\r\n    \"mobile_no\":\"+92311111111\",\r\n    \"password\":\"test@123\",\r\n    \"confirm_password\":\"test@123\",\r\n    \"device_type\":\"android\",\r\n    \"device_token\":\"123123123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}api/user",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify OTP ( Register Screen )",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"test@yopmail.com\",\r\n    \"mobile_no\":\"+923111840123\",\r\n    \"otp\":\"420571\",\r\n    \"device_type\":\"web\",\r\n    \"device_token\":\"123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}api/user/verify-otp/register",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"verify-otp",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify OTP ( Forgot Password Screen)",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "d022611f-6c8a-4e72-a19b-e55da5b64c64",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "token",
+										"value": "68bdbd1c-a197-4d78-9483-3f8f292a42be",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"tests@yopmail.com\",\r\n    \"otp\":\"131012\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}api/user/verify-otp/forgot-password",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"verify-otp",
+										"forgot-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"test@yopmail.com\",\r\n    \"password\":\"test@123\",\r\n    \"device_type\":\"ios\",\r\n    \"device_token\":\"123123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}api/user/login",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Send OTP",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "d022611f-6c8a-4e72-a19b-e55da5b64c64",
+										"type": "text",
+										"disabled": true
+									},
+									{
+										"key": "token",
+										"value": "68bdbd1c-a197-4d78-9483-3f8f292a42be",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"test@yopmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}api/user/send-otp/mail",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"send-otp",
+										"mail"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Set New Password",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnpiSFZuSWpvaU4yRTFNakl4TlRZdFlXUmtZUzAwTW1aakxUZzJOakV0TldVNVlqVTVZVGMzTWpjeklpd2lhV0YwSWpveE56RXdOelU0TVRJMUxDSmxlSEFpT2pFM01URXpOakk1TWpVc0ltbHpjeUk2SWpZNFltUmlaREZqTFdFeE9UY3ROR1EzT0MwNU5EZ3pMVE5tT0dZeU9USmhOREppWlNJc0luTjFZaUk2SWpZNFltUmlaREZqTFdFeE9UY3ROR1EzT0MwNU5EZ3pMVE5tT0dZeU9USmhOREppWlNJc0ltcDBhU0k2SWpkaE5USXlNVFUyTFdGa1pHRXROREptWXkwNE5qWXhMVFZsT1dJMU9XRTNOekkzTXlKOS5vQWVVRk50S3NLcDdLd1pMem0wdXQxXzJOdGgwY3BQWUZONFJ3ekVzRnN3",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"new_password\":\"test@123\",\r\n    \"confirm_password\":\"Test@123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}api/user/set-password",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"set-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Social Login",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "d022611f-6c8a-4e72-a19b-e55da5b64c64",
+										"type": "text"
+									},
+									{
+										"key": "token",
+										"value": "68bdbd1c-a197-4d78-9483-3f8f292a42be",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"test\",\r\n    \"email\":\"test2@yopmail.com\",\r\n    \"device_type\":\"web\",\r\n    \"device_token\":\"123\",\r\n    \"platform_type\":\"google\",\r\n    \"platform_id\":\"123123123\"\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}api/user/social-login",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"social-login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Profile",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "image_url",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "name",
+											"value": "test",
+											"type": "text"
+										},
+										{
+											"key": "sports_type",
+											"value": "gender",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}api/user",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user"
+									],
+									"query": [
+										{
+											"key": "image_url",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Change Password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"current_password\":\"test@123\",\r\n    \"new_password\":\"Test@123\",\r\n    \"confirm_password\":\"Test@123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}api/user/change-password",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"change-password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Account",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}api/user",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Logout",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}api/user/logout",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get My Profile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}api/user",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnpiSFZuSWpvaVl6aGlNVE0zWVdZdE9UZG1aaTAwWW1KaExUZzROVGN0TXpFeU16VTJZVE5rWXpjM0lpd2lhV0YwSWpveE56STBNak00TURRMUxDSmxlSEFpT2pFM01qUTROREk0TkRVc0ltbHpjeUk2SWpJMk1EUmtabU14TFdJNE1HWXROREprTmkwNE1EWTRMVFF4WVRnd05UTXlaV0UxTnlJc0luTjFZaUk2SWpJMk1EUmtabU14TFdJNE1HWXROREprTmkwNE1EWTRMVFF4WVRnd05UTXlaV0UxTnlJc0ltcDBhU0k2SW1NNFlqRXpOMkZtTFRrM1ptWXROR0ppWVMwNE9EVTNMVE14TWpNMU5tRXpaR00zTnlKOS54R1k4UHJDeFVnMXozRkg2bURfQl85Y3NxSVRzRE9Dd2pVRHZSaXljakJV",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
