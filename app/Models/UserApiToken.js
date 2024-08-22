@@ -23,7 +23,7 @@ class UserApiToken extends RestModel {
 
     getFields() {
         return [
-            'user_id', 'device_type', 'device_token', 'platform_type', 'platform_id', 'type'
+            'user_id', 'device_type', 'device_token', 'type'
         ];
     }
 
@@ -31,7 +31,7 @@ class UserApiToken extends RestModel {
 
     showColumns() {
         return [
-            'id','user_id', 'api_token', 'type', 'createdAt'
+            'id', 'user_id', 'api_token', 'type', 'createdAt'
         ];
     }
 
@@ -41,8 +41,6 @@ class UserApiToken extends RestModel {
         params.user_id = params.user_id
         params.device_type = request.body.device_type
         params.device_token = request.body.device_token
-        params.platform_type = _.isEmpty(request.body.platform_type) ? 'custom' : request.body.platform_type
-        params.platform_id = _.isEmpty(request.body.platform_id) ? null : request.body.platform_id
         params.type = params?.type ? params.type : API_TOKENS_ENUM.ACCESS
         params.createdAt = new Date()
 
@@ -60,7 +58,7 @@ class UserApiToken extends RestModel {
             expiresIn: constants.JWT_EXPIRY,
             issuer: constants.CLIENT_ID,
             subject: constants.CLIENT_ID,
-            jwtid: "user-"+user_id
+            jwtid: "user-" + user_id
         }
         var token = jwt.sign({ user_id: user_id }, constants.JWT_SECRET, jwt_options);
         return token;

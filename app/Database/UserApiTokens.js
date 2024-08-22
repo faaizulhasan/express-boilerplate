@@ -28,14 +28,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.TEXT,
             allowNull: true,
         },
-        platform_type: {
-            type: Sequelize.STRING(100),
-            allowNull: true,
-        },
-        platform_id: {
-            type: Sequelize.TEXT,
-            allowNull: true,
-        },
         type: {
             type: Sequelize.ENUM,
             values: ['ACCESS', 'RESET', 'INVITE'],

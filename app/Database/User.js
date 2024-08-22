@@ -76,6 +76,14 @@ module.exports = (sequelize, Sequelize) => {
             defaultValue: LOGIN_TYPE.CUSTOM,
             allowNull: true,
         },
+        platform_type: {
+            type: Sequelize.STRING(100),
+            allowNull: true,
+        },
+        platform_id: {
+            type: Sequelize.TEXT,
+            allowNull: true,
+        },
         is_activated: {
             type: Sequelize.BOOLEAN,
             defaultValue: true,

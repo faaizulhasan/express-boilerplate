@@ -32,7 +32,7 @@ class User extends RestModel {
         return [
             'firstname', 'lastname', 'name', 'username', 'email', 'mobile_no', 'password',
             'image_url', 'is_mobile_verify', 'mobile_verifyAt', 'is_email_verify', 'email_verifyAt',
-            'status', 'is_activated', 'is_blocked', 'login_type',
+            'status', 'is_activated', 'is_blocked', 'login_type', 'platform_type', 'platform_id',
             'createdAt', 'updatedAt', 'deletedAt',
         ];
     }
@@ -42,7 +42,7 @@ class User extends RestModel {
         return [
             'id', 'user_type', 'firstname', 'lastname', 'name', 'username',
             'email', 'mobile_no', 'image_url', 'is_mobile_verify', 'mobile_verifyAt', 'is_email_verify', 'email_verifyAt',
-            'status', 'is_activated', 'login_type',
+            'status', 'is_activated', 'login_type', 'platform_type', 'platform_id',
             'is_blocked', 'createdAt'
         ];
     }
@@ -54,7 +54,8 @@ class User extends RestModel {
         return [
             'id', 'user_type',
             'email', 'mobile_no', 'is_email_verify', 'email_verifyAt', 'is_mobile_verify', 'mobile_verifyAt',
-            'login_type', 'createdAt',
+            'login_type', 'platform_type', 'platform_id',
+            'createdAt',
         ];
     }
 
@@ -78,6 +79,8 @@ class User extends RestModel {
         params.username = params.name;
         params.password = generateHash(params.password)
         params.login_type = LOGIN_TYPE.CUSTOM
+        params.platform_type = LOGIN_TYPE.CUSTOM
+        params.platform_id = null
         params.createdAt = new Date();
     }
 
@@ -151,6 +154,8 @@ class User extends RestModel {
                 is_mobile_verify: true,
                 mobile_verifyAt: new Date(),
                 login_type: params.platform_type,
+                platform_type: request.body.platform_type,
+                platform_id: request.body.platform_id,
                 createdAt: new Date()
             });
 
@@ -203,18 +208,13 @@ class User extends RestModel {
 
     async getUserByPlatformID(platform_type, platform_id) {
         let query = await this.orm.findOne({
-            include: {
-                model: UserApiToken.instance().getModel(),
-                where: {
-                    platform_type: platform_type,
-                    platform_id: platform_id,
-                },
-                order: [['createdAt', 'DESC']]
-            }
+            where: {
+                platform_type: platform_type,
+                platform_id: platform_id,
+                deletedAt: null
+            },
+            order: [['createdAt', 'DESC']]
         })
-
-        console.log("Get User By Platform Id : ", !_.isEmpty(query) ? query.toJSON() : {})
-
         return !_.isEmpty(query) ? query.toJSON() : {};
     }
 
