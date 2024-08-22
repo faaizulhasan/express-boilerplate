@@ -33,8 +33,8 @@ const OTP_VERIFICATION_TYPE = {
 
 
 const SETTING_ENUM = {
-    PRIVACY_POLICY: 'PRIVACY_POLICY',
-    TERMS_AND_CONDITION: 'TERMS_AND_CONDITION'
+    PRIVACY_POLICY: 'privacy-policy',
+    TERMS_AND_CONDITION: 'terms-and-condition'
 }
 
 const SETTING_MAPPING_ENUM = {

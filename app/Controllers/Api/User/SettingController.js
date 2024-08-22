@@ -19,13 +19,7 @@ class SettingController extends RestController {
             this.request = request;
             this.response = response;
             const type = this.request.params.type;
-            let record = {};
-
-            const type_mapping = SETTING_MAPPING_ENUM[type];
-            if (type_mapping) {
-                record = await this.modal.getRecordByType(type_mapping);
-            }
-
+            let record = await this.modal.getRecordByType(type);
             this.__is_paginate = false;
             this.resource = 'Setting';
             return await this.sendResponse(
@@ -33,6 +27,25 @@ class SettingController extends RestController {
                 "Retreived data successfully.",
                 record
             )
+        }
+        catch (err) {
+            console.log(err);
+            return this.sendError(
+                "Internal server error. Please try again later.",
+                {},
+                500
+            )
+        }
+    }
+    async getPage({ request, response }) {
+        try {
+            this.request = request;
+            this.response = response;
+            const type = this.request.params.type;
+            let record = await this.modal.getRecordByType(type);
+            this.__is_paginate = false;
+            this.resource = 'Setting';
+            return response.render("page-template",record);
         }
         catch (err) {
             console.log(err);

@@ -8,11 +8,11 @@ class Setting extends RestModel {
   }
 
   getFields() {
-    return ["text"];
+    return ["text","title"];
   }
 
   showColumns() {
-    return ["type", 'text'];
+    return ["type","title", 'text'];
   }
 
   exceptUpdateField() {

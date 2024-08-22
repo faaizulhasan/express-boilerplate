@@ -22,6 +22,7 @@ class Setting {
 
     static jsonSchema(record, request) {
         return {
+            "title": record.title,
             "text": record.text || '',
         }
     }

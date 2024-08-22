@@ -20,6 +20,7 @@ const { ROLES, UPLOAD_DIRECTORY_MAPPING, UPLOAD_DIRECTORY, SETTING_ENUM, } = req
 const FileHandler = require("./app/Libraries/FileHandler/FileHandler");
 const { getUserDirectory, generateHash } = require("./app/Helper");
 
+const SettingController = require("./app/Controllers/Api/User/SettingController");
 
 /**App Setup */
 app.use(upload.any());
@@ -56,6 +57,7 @@ app.use('/api', controllerRoutes)
 
 
 app.get("/", (req, res) => res.render("welcome"))
+app.get('/page/:type', (req, res) => (new SettingController()).getPage({ request: req, response: res }))
 
 
 /**Server Starting */
@@ -108,13 +110,13 @@ httpServer.listen(process.env.BACKEND_PORT, () => {
 
             const settings_data = [
                 {
-                    slug: uuidv4(),
+                    title: "Privacy Policy",
                     type: SETTING_ENUM.PRIVACY_POLICY,
                     text: "Lorem epsum",
                     createdAt: new Date()
                 },
                 {
-                    slug: uuidv4(),
+                    title: "Terms And Conditions",
                     type: SETTING_ENUM.TERMS_AND_CONDITION,
                     text: "Lorem epsum",
                     createdAt: new Date()
