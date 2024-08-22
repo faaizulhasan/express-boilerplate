@@ -14,10 +14,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING(50),
             allowNull: false,
         },
-        slug: {
-            type: Sequelize.STRING(50),
-            allowNull: false,
-        },
         type: {
             type: Sequelize.STRING(50),
             allowNull: true,

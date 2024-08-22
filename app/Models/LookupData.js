@@ -30,7 +30,7 @@ class LookupData extends RestModel {
 
     showColumns() {
         return [
-            'slug', 'lookup_slug', 'title', 'createdAt'
+            'lookup_id', 'title', 'createdAt'
         ];
     }
 
@@ -42,8 +42,7 @@ class LookupData extends RestModel {
      * @param {payload object} params
      */
     async beforeCreateHook(request, params) {
-        params.slug = uuidv4();
-        params.lookup_slug = request.params.id;
+        params.lookup_id = request.params.id;
         params.title = params.title?.trim()
         params.createdAt = new Date()
     }

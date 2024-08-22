@@ -12,7 +12,7 @@ class Lookup {
             const record = data[i];
 
             response[record.key] = {
-                "slug": record.slug,
+                "id": record.id,
                 "title": record.title,
                 "values": record.LookupData_LookupSlug?.map(item => {
                     return {

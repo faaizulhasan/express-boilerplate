@@ -15,7 +15,7 @@ module.exports = {
     MAIL_FROM: process.env.MAIL_FROM,
     EMAIL_VERIFICATION: 1,
 
-    SMS_VERIFICATION: 1,
+    SMS_VERIFICATION: 0,
 
     PAGINATION_LIMIT: 20,
     LOOKUPS_ID: "de6683e5-9241-4ffc-9bf6-06d4cc614c37",

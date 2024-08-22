@@ -32,11 +32,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING(50),
             allowNull: true
         },
-        slug: {
-            type: Sequelize.STRING(100),
-            allowNull: false,
-            unique: true
-        },
         email: {
             type: Sequelize.STRING(50),
             allowNull: true,

@@ -7,7 +7,7 @@ const ROLES = {
 
 
 const UPLOAD_DIRECTORY = {
-    USER: USER_UPLOAD_DIRECTORY,
+    USER: "user",
 }
 
 const UPLOAD_DIRECTORY_MAPPING = {

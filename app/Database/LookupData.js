@@ -7,19 +7,14 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
-        slug: {
-            type: Sequelize.STRING(100),
-            allowNull: false,
-            unique: true
-        },
-        lookup_slug: {
-            type: Sequelize.STRING(100),
+        lookup_id: {
+            type: Sequelize.INTEGER,
             allowNull: false,
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
             references: {
                 model: require("./Lookup")(sequelize, Sequelize),
-                key: 'slug'
+                key: 'id'
             }
         },
         title: {

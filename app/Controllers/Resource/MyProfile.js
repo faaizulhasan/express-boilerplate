@@ -31,7 +31,7 @@ class MyProfile {
             "firstname": record.firstname || '',
             "lastname": record.lastname || '',
             "name": record.name || '',
-            "slug": record.slug,
+            "id": record.id,
             "username": record.username || '',
             "email": record.email,
             "image_url": getUserImageUrl(record.image_url),

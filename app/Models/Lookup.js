@@ -27,7 +27,7 @@ class Lookup extends RestModel {
 
     showColumns() {
         return [
-            'slug', 'title', 'key', 'createdAt'
+            'title', 'key', 'createdAt'
         ];
     }
 

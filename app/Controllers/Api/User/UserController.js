@@ -1,7 +1,7 @@
 const _ = require("lodash")
-const { LOGIN_TYPE, GENDER_ENUM, API_TOKENS_ENUM } = require("../../../config/enum.js");
+const { LOGIN_TYPE, GENDER_ENUM, API_TOKENS_ENUM,UPLOAD_DIRECTORY } = require("../../../config/enum.js");
 const constants = require("../../../config/constants.js");
-const { validateAll, compareHash, extractFields, generateHash, validateAsync, getUserDirectory } = require("../../../Helper/index.js");
+const { validateAll, compareHash, extractFields, generateHash, validateAsync, getUploadDirectoryPath } = require("../../../Helper/index.js");
 
 
 const FileHandler = require("../../../Libraries/FileHandler/FileHandler.js");
@@ -73,8 +73,8 @@ class UserController extends RestController {
 
         try {
             const fileObject = this.request.files;
-            const image_url = await FileHandler.doUpload(fileObject[0], getUserDirectory())
-            this.request.image_url = image_url
+            const image_url = await FileHandler.doUpload(fileObject[0], getUploadDirectoryPath(UPLOAD_DIRECTORY.USER))
+            this.request.image_url = UPLOAD_DIRECTORY.USER + "/" + image_url
             return
         }
         catch (err) {
@@ -470,7 +470,7 @@ class UserController extends RestController {
             this.request = request;
             this.response = response;
 
-            await this.modal.toggleNotification(request.user.slug);
+            await this.modal.toggleNotification(request.user.id);
             this.__is_paginate = false;
             this.__collection = false
             return await this.sendResponse(

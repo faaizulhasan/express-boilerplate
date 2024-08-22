@@ -22,7 +22,7 @@ class LookupData {
 
     static jsonSchema(record, request) {
         return {
-            "slug": record.slug,
+            "id": record.id,
             "title": record.title || '',
         }
     }

@@ -1,4 +1,4 @@
-const { getUserImageUrl } = require("../../Helper");
+const { getImageUrl } = require("../../Helper");
 const _ = require("lodash")
 
 class User {
@@ -28,13 +28,13 @@ class User {
             : Buffer.from(request.authorization).toString('base64');
 
         return {
+            "id": record.id,
             "firstname": record.firstname || '',
             "lastname": record.lastname || '',
             "name": record.name || '',
-            "slug": record.slug,
             "username": record.username || '',
             "email": record.email,
-            "image_url": getUserImageUrl(record.image_url),
+            "image_url": getImageUrl(record.image_url),
             "country": record.country || '',
             "mobile_no": record.mobile_no,
             "api_token": api_token,

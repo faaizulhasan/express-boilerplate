@@ -9,7 +9,7 @@ class FileHandler {
     static async doUpload(fileObject, destination_upload_path = 'uploads/', resize = true) {
         let supportDrivers = ['local', 's3'];
         if (supportDrivers.indexOf(constants.FILE_SYSTEM) == -1) {
-            throw new Error('File upload driver ' + Env.get('FILESYSTEM') + ' is not supported');
+            throw new Error('File upload driver ' + process.env.FILESYSTEM + ' is not supported');
             return;
         }
         if (constants.FILE_SYSTEM == 'local') {
@@ -20,8 +20,9 @@ class FileHandler {
     }
 
     static async uploadFileInLocal(fileObject, destination_upload_path, resize) {
-        //single file upload
-        console.log(fileObject)
+        if (!fs.existsSync(destination_upload_path)) {
+            fs.mkdirSync(destination_upload_path, { recursive: true });
+        }
         if (!Array.isArray(fileObject)) {
             const subtype = fileObject.mimetype.split('/')
             let filename = `${new Date().getTime()}.${subtype[subtype.length - 1]}`;

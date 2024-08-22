@@ -30,7 +30,7 @@ class User extends RestModel {
 
     getFields() {
         return [
-            'firstname', 'lastname', 'name', 'username', 'slug', 'email', 'mobile_no', 'password',
+            'firstname', 'lastname', 'name', 'username', 'email', 'mobile_no', 'password',
             'image_url', 'is_mobile_verify', 'mobile_verifyAt', 'is_email_verify', 'email_verifyAt',
             'status', 'is_activated', 'is_blocked', 'login_type',
             'createdAt', 'updatedAt', 'deletedAt',
@@ -40,7 +40,7 @@ class User extends RestModel {
 
     showColumns() {
         return [
-            'id', 'user_type', 'slug', 'firstname', 'lastname', 'name', 'username',
+            'id', 'user_type', 'firstname', 'lastname', 'name', 'username',
             'email', 'mobile_no', 'image_url', 'is_mobile_verify', 'mobile_verifyAt', 'is_email_verify', 'email_verifyAt',
             'status', 'is_activated', 'login_type',
             'is_blocked', 'createdAt'
@@ -52,7 +52,7 @@ class User extends RestModel {
      */
     exceptUpdateField() {
         return [
-            'id', 'slug', 'user_type',
+            'id', 'user_type',
             'email', 'mobile_no', 'is_email_verify', 'email_verifyAt', 'is_mobile_verify', 'mobile_verifyAt',
             'login_type', 'createdAt',
         ];
@@ -62,9 +62,9 @@ class User extends RestModel {
      * Hook for manipulate query of index result
      * @param {current mongo query} query
      * @param {adonis request object} request
-     * @param {object} slug
+     * @param {object} id
      */
-    async indexQueryHook(query, request, slug = {}) {
+    async indexQueryHook(query, request, id = {}) {
 
     }
 
@@ -75,7 +75,6 @@ class User extends RestModel {
      */
     async beforeCreateHook(request, params) {
         params.user_type = ROLES.USER;
-        params.slug = uuidv4();
         params.username = params.name;
         params.password = generateHash(params.password)
         params.login_type = LOGIN_TYPE.CUSTOM
@@ -90,11 +89,11 @@ class User extends RestModel {
      */
     async afterCreateHook(record, request, params) {
         const otp_record = {};
-        if ((constants.EMAIL_VERIFICATION == 1) && record.email) {
+        if ((constants.EMAIL_VERIFICATION) && record.email) {
             otp_record.email = record.email;
         }
 
-        if ((constants.SMS_VERIFICATION == 1) && record.mobile_no) {
+        if ((constants.SMS_VERIFICATION) && record.mobile_no) {
             otp_record.mobile_no = record.mobile_no;
         }
         if (!_.isEmpty(otp_record)) {
@@ -108,9 +107,9 @@ class User extends RestModel {
  * Hook for manipulate data input before update data is execute
  * @param {adonis request object} request
  * @param {payload object} params
- * @param {string} slug
+ * @param {integer} int
  */
-    async beforeEditHook(request, params, slug) {
+    async beforeEditHook(request, params, id) {
         let exceptUpdateField = this.exceptUpdateField();
         exceptUpdateField.filter(exceptField => {
             delete params[exceptField];
@@ -146,7 +145,6 @@ class User extends RestModel {
                 image_url: _.isEmpty(params.image_url) ? null : params.image_url,
                 username: params.name,
                 password: password,
-                slug: uuidv4(),
                 is_activated: true,
                 is_email_verify: true,
                 email_verifyAt: new Date(),
@@ -256,7 +254,7 @@ class User extends RestModel {
         return true;
     }
 
-    async verifySocial(request, slug) {
+    async verifySocial(request, user_id) {
         await this.orm.update(
             {
                 email_verifyAt: new Date(),
@@ -266,7 +264,7 @@ class User extends RestModel {
             },
             {
                 where: {
-                    slug: slug,
+                    id: user_id,
                     deletedAt: null
                 }
             })
@@ -306,10 +304,9 @@ class User extends RestModel {
 
 
     async getMyProfile(request) {
-        const user_slug = request.user.slug;
         const record = await this.orm.findOne({
             where: {
-                slug: user_slug,
+                id: request.user.id,
                 deletedAt: null
             },
         })
@@ -319,12 +316,12 @@ class User extends RestModel {
 
 
 
-    async toggleNotification(user_slug) {
+    async toggleNotification(user_id) {
         await this.orm.update({
             is_pushNotification: Sequelize.literal('case when is_pushNotification=0 then 1 else 0 end')
         }, {
             where: {
-                slug: user_slug
+                id: user_id
             }
         })
         return;
@@ -344,9 +341,9 @@ class User extends RestModel {
      * Hook for execute command before delete
      * @param {adonis request object} request
      * @param {payload object} params
-     * @param {string} slug
+     * @param {integer} id
      */
-    async beforeDeleteHook(request, params, slug) {
+    async beforeDeleteHook(request, params, id) {
 
     }
 
@@ -354,10 +351,10 @@ class User extends RestModel {
      * Hook for execute command after delete
      * @param {adonis request object} request
      * @param {payload object} params
-     * @param {string} slug
+     * @param {integer} id
      */
-    async afterDeleteHook(request, params, slug) {
-        await UserApiToken.instance().deleteRecord(slug);
+    async afterDeleteHook(request, params, id) {
+        await UserApiToken.instance().deleteRecord(id);
         await UserOTP.instance().deleteRecord(request.user.email, request.user.mobile_no)
     }
 

@@ -12,11 +12,11 @@ class Setting extends RestModel {
   }
 
   showColumns() {
-    return ["slug", "type", 'text'];
+    return ["type", 'text'];
   }
 
   exceptUpdateField() {
-    return ["slug", "type"];
+    return ["type"];
   }
 
 
@@ -34,7 +34,6 @@ class Setting extends RestModel {
 
 
   async beforeCreateHook(request, params) {
-    params.slug = uuidv4();
     params.text = params.text?.trim()
     params.createdAt = new Date()
   }

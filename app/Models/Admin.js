@@ -48,7 +48,6 @@ class Admin extends User {
     async beforeCreateHook(request, params) {
         params.user_type = ROLES.ADMIN;
         params.name = "admin";
-        params.slug = uuidv4();
         params.password = generateHash(params.password)
         params.is_email_verify = true;
         params.email_verifyAt = new Date();

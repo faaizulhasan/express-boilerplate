@@ -6,14 +6,14 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
-        slug: {
-            type: Sequelize.STRING(100),
+        user_id: {
+            type: Sequelize.INTEGER,
             allowNull: false,
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',
             references: {
                 model: require("./User.js")(sequelize, Sequelize),
-                key: 'slug'
+                key: 'id'
             }
         },
         api_token: {

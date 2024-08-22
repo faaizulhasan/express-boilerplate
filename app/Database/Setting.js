@@ -6,11 +6,6 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    slug: {
-      type: Sequelize.STRING(100),
-      allowNull: false,
-      unique: true,
-    },
     text: {
       type: Sequelize.TEXT,
       allowNull: false,

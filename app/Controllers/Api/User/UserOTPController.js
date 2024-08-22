@@ -77,6 +77,7 @@ class UserOTPController extends RestController {
 
     async afterStoreLoadModel() {
         this.__collection = false;
+        this.response_message = "OTP Send Successfully";
         return {}
     }
 
@@ -133,7 +134,7 @@ class UserOTPController extends RestController {
             user = await User.instance().getUserByMobileNo(params.mobile_no);
         }
 
-        await User.instance().verifySocial(this.request, user.slug)
+        await User.instance().verifySocial(this.request, user.id)
 
         params.slug = user.slug;
         await UserApiToken.instance().createRecord(

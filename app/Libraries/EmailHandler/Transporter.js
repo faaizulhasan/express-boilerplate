@@ -13,6 +13,9 @@ class Transporter {
             auth: {
                 user: constants.MAIL_EMAIL,
                 pass: constants.MAIL_PASSWORD
+            },
+            tls: {
+                rejectUnauthorized: false
             }
         }) : nodemailer.createTransport(nodemailerSendgrid({
             apiKey: constants.MAIL_API_KEY

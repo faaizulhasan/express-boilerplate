@@ -35,12 +35,11 @@ class UserOTP extends RestModel {
 
     showColumns() {
         return [
-            'slug', 'email', 'mobile_no'
+            'email', 'mobile_no'
         ];
     }
 
     async beforeCreateHook(request, params) {
-        params.slug = uuidv4();
         params.otp = generateOTP()
         params.createdAt = new Date()
     }

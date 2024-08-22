@@ -23,7 +23,7 @@ class UserApiToken extends RestModel {
 
     getFields() {
         return [
-            'slug', 'device_type', 'device_token', 'platform_type', 'platform_id', 'type'
+            'user_id', 'device_type', 'device_token', 'platform_type', 'platform_id', 'type'
         ];
     }
 
@@ -31,13 +31,13 @@ class UserApiToken extends RestModel {
 
     showColumns() {
         return [
-            'slug', 'api_token', 'type', 'createdAt'
+            'user_id', 'api_token', 'type', 'createdAt'
         ];
     }
 
     async beforeCreateHook(request, params) {
-        await this.deleteRecord(params.slug);
-        params.api_token = this.generateApiToken(params.slug)
+        await this.deleteRecord(params.id);
+        params.api_token = this.generateApiToken(params.user_id)
         params.device_type = request.body.device_type
         params.device_token = request.body.device_token
         params.platform_type = _.isEmpty(request.body.platform_type) ? 'custom' : request.body.platform_type
@@ -53,15 +53,15 @@ class UserApiToken extends RestModel {
 
     }
 
-    generateApiToken(slug) {
+    generateApiToken(user_id) {
         let jwt_options = {
             algorithm: 'HS256',
             expiresIn: constants.JWT_EXPIRY,
             issuer: constants.CLIENT_ID,
             subject: constants.CLIENT_ID,
-            jwtid: slug
+            jwtid: user_id
         }
-        var token = jwt.sign({ slug: slug }, constants.JWT_SECRET, jwt_options);
+        var token = jwt.sign({ user_id: user_id }, constants.JWT_SECRET, jwt_options);
         return token;
     }
 
@@ -70,7 +70,7 @@ class UserApiToken extends RestModel {
      * @param {String} user_slug 
      * @returns {UserApiToken -> User}
      */
-    async getRecordByUserSlug(user_slug) {
+    async getRecordByUserId(user_id) {
         const record = await this.orm.findOne({
             where: {
                 type: API_TOKENS_ENUM.ACCESS,
@@ -80,7 +80,7 @@ class UserApiToken extends RestModel {
                 model: User.instance().getModel(),
                 required: true,
                 where: {
-                    slug: user_slug,
+                    user_id: user_id,
                     is_activated: true,
                     is_blocked: false,
                     deletedAt: null,
@@ -92,14 +92,12 @@ class UserApiToken extends RestModel {
         return _.isEmpty(record) ? {} : record.toJSON();
     }
 
-    async deleteRecord(slug, type = 'ALL') {
-        console.log("Delete Api Token : ", slug)
-
+    async deleteRecord(id, type = 'ALL') {
         const conditions = {}
         if (type !== 'ALL') {
             conditions.type = type;
         }
-        conditions.slug = slug;
+        conditions.id = id;
 
         const query = await this.orm.update({
             deletedAt: new Date()

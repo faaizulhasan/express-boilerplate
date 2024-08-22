@@ -26,7 +26,7 @@ class SocialUser extends RestModel {
 
     showColumns() {
         return [
-            'slug', 'name', 'email', 'platform_type', 'platform_id'
+            'name', 'email', 'platform_type', 'platform_id'
         ];
     }
 
@@ -54,7 +54,6 @@ class SocialUser extends RestModel {
      */
     async beforeCreateHook(request, params) {
         // await this.deleteRecord(params?.platform_id)
-        params.slug = uuidv4();
         params.createdAt = new Date();
     }
 

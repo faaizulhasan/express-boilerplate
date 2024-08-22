@@ -11,6 +11,9 @@ const baseUrl = () => {
 const getUserDirectory = () => {
     return 'upload/' + UPLOAD_DIRECTORY.USER + '/';
 }
+const getUploadDirectoryPath = (module) => {
+    return 'upload/' + module + '/';
+}
 const isJSON = (str) => {
     try {
         JSON.parse(str);
@@ -172,4 +175,5 @@ module.exports = {
     compareHash,
     getImageUrl,
     getUserImageUrl,
+    getUploadDirectoryPath
 }

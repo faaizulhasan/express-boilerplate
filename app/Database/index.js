@@ -41,11 +41,11 @@ db.lookup_data = require("./LookupData.js")(sequelize, Sequelize);
 
 
 /**User Api Token Models Relationships Or Assosiaction */
-db.users.hasOne(db.user_api_tokens, { foreignKey: "slug", sourceKey: 'slug', as: "UserApiToken_Slug_Single" });
-db.users.hasMany(db.user_api_tokens, { foreignKey: "slug", sourceKey: 'slug' });
+db.users.hasOne(db.user_api_tokens, { foreignKey: "user_id", sourceKey: 'id', as: "UserApiToken_Slug_Single" });
+db.users.hasMany(db.user_api_tokens, { foreignKey: "user_id", sourceKey: 'id' });
 db.user_api_tokens.belongsTo(db.users, {
-    foreignKey: "slug",
-    targetKey: 'slug'
+    foreignKey: "user_id",
+    targetKey: 'id'
 }, {
     onDelete: 'cascade',
     onUpdate: 'cascade'
@@ -66,10 +66,10 @@ db.users.belongsTo(db.user_groups, {
 
 
 /*Lookup Data Model Relation */
-db.lookups.hasMany(db.lookup_data, { foreignKey: "lookup_slug", sourceKey: 'slug', as: "LookupData_LookupSlug" });
+db.lookups.hasMany(db.lookup_data, { foreignKey: "lookup_id", sourceKey: 'id', as: "LookupData_LookupSlug" });
 db.lookup_data.belongsTo(db.lookups, {
-    foreignKey: "lookup_slug",
-    targetKey: 'slug',
+    foreignKey: "lookup_id",
+    targetKey: 'id',
     as: "LookupData_LookupSlug"
 }, {
     onDelete: 'cascade',

@@ -55,7 +55,7 @@ class RestController extends Controller {
             }
             await this.sendResponse(
                 200,
-                'Retrieved data successfully!.',
+                this.response_message || 'Retrieved data successfully!.',
                 records
             );
             return;
@@ -113,7 +113,7 @@ class RestController extends Controller {
             this.__is_paginate = false;
             await this.sendResponse(
                 200,
-                'Store record successfully!.',
+                this.response_message || 'Store record successfully!.',
                 record
             );
 
@@ -169,7 +169,7 @@ class RestController extends Controller {
             this.__is_paginate = false;
             await this.sendResponse(
                 200,
-                'Retrieved data successfully!.',
+                this.response_message || 'Retrieved data successfully!.',
                 record
             );
 
@@ -240,7 +240,7 @@ class RestController extends Controller {
             this.__is_paginate = false;
             await this.sendResponse(
                 200,
-                "Record Updated Successfully",
+                this.response_message || "Record Updated Successfully",
                 record
             );
             return;
@@ -290,7 +290,7 @@ class RestController extends Controller {
             this.__is_paginate = false;
             await this.sendResponse(
                 200,
-                'Delete record successfully!.',
+                this.response_message || 'Delete record successfully!.',
                 record
             );
             return;
