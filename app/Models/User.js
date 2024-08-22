@@ -126,14 +126,14 @@ class User extends RestModel {
         let params = request.body;
 
         if (!_.isEmpty(params.email)) {
-            socialUser = await this.getUserByEmail(params.email);
+            user = await this.getUserByEmail(params.email);
         }
-        if (_.isEmpty(socialUser)) {
+        if (_.isEmpty(user)) {
             socialUser = await this.getUserByPlatformID(params.platform_type, params.platform_id);
         }
 
         //add new user
-        if (_.isEmpty(socialUser)) {
+        if (_.isEmpty(user)) {
             let password = randomstring.generate(8);
             user = await this.orm.create({
                 user_type: ROLES.USER,
@@ -161,19 +161,21 @@ class User extends RestModel {
                 updated_at: new Date()
             };
             if (!_.isEmpty(params.name)) {
-                socialUser.name = updateParams.name = params.name
-                socialUser.username = updateParams.username = params.name
+                user.name = updateParams.name = params.name
+                user.username = updateParams.username = params.name
+            }
+            if (!_.isEmpty(params.firstname) && !_.isEmpty(params.lastname)) {
+                user.firstname = updateParams.firstname = params.firstname
+                user.lastname = updateParams.lastname = params.lastname
             }
             if (!_.isEmpty(params.image_url))
-                socialUser.image_url = updateParams.image_url = params.image_url
+                user.image_url = updateParams.image_url = params.image_url
 
             await this.orm.update(updateParams, {
                 where: {
-                    id: socialUser.id
+                    id: user.id
                 }
             })
-
-            user = socialUser;
         }
         return user;
     }

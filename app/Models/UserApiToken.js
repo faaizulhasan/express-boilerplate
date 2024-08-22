@@ -31,13 +31,14 @@ class UserApiToken extends RestModel {
 
     showColumns() {
         return [
-            'user_id', 'api_token', 'type', 'createdAt'
+            'id','user_id', 'api_token', 'type', 'createdAt'
         ];
     }
 
     async beforeCreateHook(request, params) {
-        await this.deleteRecord(params.id);
+        await this.deleteRecord(params.user_id);
         params.api_token = this.generateApiToken(params.user_id)
+        params.user_id = params.user_id
         params.device_type = request.body.device_type
         params.device_token = request.body.device_token
         params.platform_type = _.isEmpty(request.body.platform_type) ? 'custom' : request.body.platform_type
@@ -59,7 +60,7 @@ class UserApiToken extends RestModel {
             expiresIn: constants.JWT_EXPIRY,
             issuer: constants.CLIENT_ID,
             subject: constants.CLIENT_ID,
-            jwtid: user_id
+            jwtid: "user-"+user_id
         }
         var token = jwt.sign({ user_id: user_id }, constants.JWT_SECRET, jwt_options);
         return token;
@@ -97,7 +98,7 @@ class UserApiToken extends RestModel {
         if (type !== 'ALL') {
             conditions.type = type;
         }
-        conditions.id = id;
+        conditions.user_id = id;
 
         const query = await this.orm.update({
             deletedAt: new Date()

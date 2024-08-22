@@ -88,10 +88,11 @@ class RestModel {
     /**
        *
        * @param request
-       * @param slug
+     * @param id
        * @returns {Promise<*>}
        */
-    async getRecordBySlug(request, slug) {
+
+    async getRecordById(request, id) {
         let query = {
             where: {
                 deletedAt: null,
@@ -100,7 +101,7 @@ class RestModel {
         }
         //query hook
         if (_.isFunction(this.singleQueryHook)) {
-            await this.singleQueryHook(query, request, slug);
+            await this.singleQueryHook(query, request, id);
         }
 
         //Add Slug Condition
@@ -108,7 +109,7 @@ class RestModel {
             ...query,
             where: {
                 ...query.where,
-                slug: slug
+                id: id
             }
         }
 
@@ -168,18 +169,18 @@ class RestModel {
        * @param id
        * @returns {Promise<*>}
        */
-    async updateRecord(request, params, slug) {
+    async updateRecord(request, params, id) {
         //before update hook
         try {
             let record;
             if (_.isFunction(this.beforeEditHook)) {
-                await this.beforeEditHook(request, params, slug);
+                await this.beforeEditHook(request, params, id);
             }
             //update record
             if (!_.isEmpty(params)) {
                 record = await this.orm.update(params, {
                     where: {
-                        slug: slug
+                        id: id
                     },
                     ...(request.transaction ? { transaction: request.transaction } : {})
                 })
@@ -194,7 +195,7 @@ class RestModel {
                 request.transaction = null
             }
 
-            record = await this.getRecordBySlug(request, slug);
+            record = await this.getRecordById(request, id);
             return record;
         }
         catch (err) {
@@ -213,21 +214,21 @@ class RestModel {
      * @param id
      * @returns {Promise<void>}
      */
-    async deleteRecord(request, params, slug) {
+    async deleteRecord(request, params, id) {
         //before delete hook
         try {
             let slug_arr = [];
             if (_.isFunction(this.beforeDeleteHook)) {
-                await this.beforeDeleteHook(request, params, slug);
+                await this.beforeDeleteHook(request, params, id);
             }
-            if (slug == 'delete-record') {
-                slug_arr = params.slug
+            if (id == 'delete-record') {
+                slug_arr = params.id
             }
-            else if (Array.isArray(slug)) {
-                slug_arr = slug
+            else if (Array.isArray(id)) {
+                slug_arr = id
             }
             else {
-                slug_arr.push(slug);
+                slug_arr.push(id);
             }
             //check soft delete
             if (_.isFunction(this.softdelete)) {
@@ -236,27 +237,27 @@ class RestModel {
                         deletedAt: new Date()
                     }, {
                         where: {
-                            slug: slug_arr
+                            id: slug_arr
                         },
                         ...(request.transaction ? { transaction: request.transaction } : {})
                     })
                 } else {
                     await this.orm.destroy({
                         where: {
-                            slug: slug_arr
+                            id: slug_arr
                         }
                     })
                 }
             } else {
                 await this.orm.destroy({
                     where: {
-                        slug: slug_arr
+                        id: slug_arr
                     }
                 })
             }
             //after delete hook
             if (_.isFunction(this.afterDeleteHook)) {
-                await this.afterDeleteHook(request, params, slug);
+                await this.afterDeleteHook(request, params, id);
             }
             if (request.transaction) {
                 await request.transaction.commit();

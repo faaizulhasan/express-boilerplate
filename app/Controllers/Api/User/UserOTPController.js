@@ -136,7 +136,7 @@ class UserOTPController extends RestController {
 
         await User.instance().verifySocial(this.request, user.id)
 
-        params.slug = user.slug;
+        params.user_id = user.id;
         await UserApiToken.instance().createRecord(
             request,
             extractFields(
@@ -202,7 +202,7 @@ class UserOTPController extends RestController {
         }
 
         const payload = {}
-        payload.slug = user.slug;
+        payload.user_id = user.id;
         payload.type = API_TOKENS_ENUM.RESET
         await UserApiToken.instance().createRecord(
             request,

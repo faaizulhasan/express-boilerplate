@@ -68,7 +68,7 @@ class UserController extends RestController {
     async beforeUpdateLoadModel() {
         const params = this.request.body;
 
-        this.params.id = this.request.user.slug;
+        this.params.id = this.request.user.id;
         if (!this.request.files?.length) return
 
         try {
@@ -90,12 +90,13 @@ class UserController extends RestController {
 
     async afterStoreLoadModel(record) {
         this.__collection = false;
+        this.response_message = "User Created Successfully";
         return {}
     }
 
     async beforeDestroyLoadModel() {
         console.log('Before Destroy Load Model ')
-        this.params.id = this.request.user.slug
+        this.params.id = this.request.user.id
     }
 
     async login({ request, response }) {
@@ -178,7 +179,7 @@ class UserController extends RestController {
                 );
             }
 
-            request.body.slug = user.slug
+            request.body.user_id = user.id
             await UserApiToken.instance().createRecord(
                 request,
                 extractFields(request.body, UserApiToken.instance().getFields())
@@ -232,8 +233,7 @@ class UserController extends RestController {
 
         if (!_.isEmpty(params.email)) {
             await SocialUser.instance().findOrCreateRecord(this.request, extractFields(params, SocialUser.instance().getFields()));
-        }
-        else {
+        } else {
             const saved_user = await SocialUser.instance().getUserRecord(params.platform_id, params.platform_type)
             if (!_.isEmpty(saved_user)) {
                 params.email = saved_user.email;
@@ -244,6 +244,7 @@ class UserController extends RestController {
         if (!_.isEmpty(params.email)) {
             socialUser = await this.modal.getUserByEmail(params.email);
         }
+
         // if (_.isEmpty(socialUser)) {
         //     socialUser = await this.modal.getUserByPlatformID(params.platform_type, params.platform_id);
         // }
@@ -286,7 +287,7 @@ class UserController extends RestController {
 
         let user = await this.modal.socialLogin(request);
 
-        const invite_count = await Invite.instance().getInviteCount(user.slug);
+        /*const invite_count = await Invite.instance().getInviteCount(user.id);
         if (invite_count < constants.MIN_INVITE_REQUIRED) {
             request.body.slug = user.slug
             request.body.type = API_TOKENS_ENUM.INVITE
@@ -300,11 +301,12 @@ class UserController extends RestController {
                 { invite_count: invite_count, api_token: Buffer.from(this.request.api_token).toString('base64') },
                 430
             );
-        }
+        }*/
 
 
         //generate api token
         const userApiToken = UserApiToken.instance()
+        user.user_id = user.id;
         await userApiToken.createRecord(request, extractFields(user, userApiToken.getFields()))
 
 
@@ -342,7 +344,7 @@ class UserController extends RestController {
         }
         //update user
         await this.modal.updateUser({ email: user.email }, update_params);
-        await UserApiToken.instance().deleteRecord(user.slug)
+        await UserApiToken.instance().deleteRecord(user.id)
         await UserOTP.instance().deleteRecord(user?.email, user?.mobile_no)
 
         this.__is_paginate = false;
@@ -452,7 +454,7 @@ class UserController extends RestController {
         await this.modal.updateUser({ email: user.email }, update_params);
 
         //remove all api token except current api token
-        await UserApiToken.instance().deleteRecord(user.slug)
+        await UserApiToken.instance().deleteRecord(user.id)
 
         this.__is_paginate = false;
         this.__collection = false;
@@ -512,8 +514,8 @@ class UserController extends RestController {
         this.request = request;
         this.response = response;
 
-        const user_slug = request.user.slug;
-        const record = await UserApiToken.instance().deleteRecord(user_slug);
+        const id = request.user.id;
+        const record = await UserApiToken.instance().deleteRecord(id);
 
         this.__is_paginate = false;
         this.__collection = false;
