@@ -2,7 +2,7 @@ module.exports = (sequelize, Sequelize) => {
 
     const SocialUser = sequelize.define("social_user", {
         id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER.UNSIGNED,
             primaryKey: true,
             autoIncrement: true
         },

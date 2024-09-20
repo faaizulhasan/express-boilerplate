@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
 
     const Reset_Passwords = sequelize.define("reset_passwords", {
         id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER.UNSIGNED,
             primaryKey: true,
             autoIncrement: true
         },

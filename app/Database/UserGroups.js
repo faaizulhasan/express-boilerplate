@@ -6,7 +6,7 @@ module.exports = (sequelize, Sequelize) => {
 
     const User_Groups = sequelize.define("user_groups", {
         id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER.UNSIGNED,
             primaryKey: true,
             autoIncrement: true
         },

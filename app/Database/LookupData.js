@@ -3,12 +3,12 @@ module.exports = (sequelize, Sequelize) => {
 
     const LookupData = sequelize.define("lookup_data", {
         id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER.UNSIGNED,
             primaryKey: true,
             autoIncrement: true
         },
         lookup_id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER.UNSIGNED,
             allowNull: false,
             onDelete: 'CASCADE',
             onUpdate: 'CASCADE',

@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
 
     const User_Otp = sequelize.define("user_otp", {
         id: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER.UNSIGNED,
             primaryKey: true,
             autoIncrement: true
         },
