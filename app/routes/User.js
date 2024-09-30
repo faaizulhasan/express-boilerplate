@@ -13,6 +13,7 @@ const OTPTokenAuthentication = require("../Middleware/OTPTokenAuthentication");
 const SettingController = require("../Controllers/Api/User/SettingController");
 const LookupController = require("../Controllers/Api/User/LookupController");
 const UserController = require("../Controllers/Api/User/UserController");
+const UserApiTokenController = require("../Controllers/Api/User/UserApiTokenController");
 
 
 
@@ -35,6 +36,7 @@ router.post('/verify-otp/forgot-password', checkApiToken, (req, res) => (new Use
 /* User Configure Account Routes */
 router.post('/', checkApiToken, upload.any(), (req, res) => (new UserController()).store({ request: req, response: res }))
 router.post('/login', checkApiToken, (req, res) => (new UserController()).login({ request: req, response: res }))
+router.patch('/device-token', apiAuthentication, (req, res) => (new UserApiTokenController()).update({ request: req, response: res }))
 router.post('/social-login', checkApiToken, (req, res) => (new UserController()).socialLogin({ request: req, response: res }))
 router.patch('/', apiAuthentication, (req, res) => (new UserController()).update({ request: req, response: res }))
 router.patch('/notification', apiAuthentication, (req, res) => (new UserController()).toggleNotification({ request: req, response: res }))
