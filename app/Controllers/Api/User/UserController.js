@@ -240,7 +240,7 @@ class UserController extends RestController {
                     deletedAt: null
                 }
             )
-            if (existing_user.email !== params.email) {
+            if (!_.isEmpty(existing_user) && (existing_user.email !== params.email)) {
                 return this.sendError(
                     "Invalid social details",
                     {},
