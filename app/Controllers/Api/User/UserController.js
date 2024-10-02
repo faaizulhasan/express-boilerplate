@@ -1,5 +1,5 @@
 const _ = require("lodash")
-const { LOGIN_TYPE, GENDER_ENUM, API_TOKENS_ENUM,UPLOAD_DIRECTORY } = require("../../../config/enum.js");
+const { LOGIN_TYPE, GENDER_ENUM, API_TOKENS_ENUM, UPLOAD_DIRECTORY } = require("../../../config/enum.js");
 const constants = require("../../../config/constants.js");
 const { validateAll, compareHash, extractFields, generateHash, validateAsync, getUploadDirectoryPath } = require("../../../Helper/index.js");
 
@@ -232,6 +232,21 @@ class UserController extends RestController {
 
 
         if (!_.isEmpty(params.email)) {
+            const existing_user = await this.modal.getRecordByCondition(
+                this.request,
+                {
+                    platform_id: params.platform_id,
+                    platform_type: params.platform_type,
+                    deletedAt: null
+                }
+            )
+            if (existing_user.email !== params.email) {
+                return this.sendError(
+                    "Invalid social details",
+                    {},
+                    400
+                )
+            }
             await SocialUser.instance().findOrCreateRecord(this.request, extractFields(params, SocialUser.instance().getFields()));
         } else {
             const saved_user = await SocialUser.instance().getUserRecord(params.platform_id, params.platform_type)
