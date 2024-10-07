@@ -43,7 +43,21 @@ const SETTING_MAPPING_ENUM = {
 }
 
 
+const CHAT_ROOM_STATUS_ENUM = {
+    PENDING: 'pending',
+    ACCEPTED: 'accepted',
+    REJECTED: 'rejected'
+}
 
+const MESSAGE_TYPE_ENUM = {
+    TEXT: 'TEXT',
+    FILE: 'FILE',
+    BADGE: 'BADGE'
+}
+const CHAT_ROOM_TYPE_ENUM = {
+    SINGLE: 'single',
+    GROUP: 'group'
+}
 module.exports = {
     ROLES,
     LOGIN_TYPE,
@@ -53,5 +67,7 @@ module.exports = {
     UPLOAD_DIRECTORY_MAPPING,
     SETTING_ENUM,
     SETTING_MAPPING_ENUM,
-
+    CHAT_ROOM_STATUS_ENUM,
+    MESSAGE_TYPE_ENUM,
+    CHAT_ROOM_TYPE_ENUM
 }
