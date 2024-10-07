@@ -140,6 +140,7 @@ class User extends RestModel {
         if (_.isEmpty(user)) {
             let password = randomstring.generate(8);
             user = await this.orm.create({
+                slug: uuidv4(),
                 user_type: ROLES.USER,
                 name: params.name,
                 firstname: params.firstname || null,
