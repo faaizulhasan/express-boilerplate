@@ -21,6 +21,7 @@ const FileHandler = require("./app/Libraries/FileHandler/FileHandler");
 const { getUserDirectory, generateHash } = require("./app/Helper");
 
 const SettingController = require("./app/Controllers/Api/User/SettingController");
+const Socket = require("./socket.js");
 
 /**App Setup */
 app.use(upload.any());
@@ -58,12 +59,15 @@ app.use('/api', controllerRoutes)
 
 app.get("/", (req, res) => res.render("welcome"))
 app.get('/page/:type', (req, res) => (new SettingController()).getPage({ request: req, response: res }))
-
+app.get("/test-socket", (req, res) => {
+    res.render('socket-template');
+})
 
 /**Server Starting */
 const force = process.argv[2] === '--force'
 const alter = process.argv[2] === '--alter';
 const httpServer = http.createServer(app)
+Socket.instance(httpServer)
 
 httpServer.listen(process.env.BACKEND_PORT, () => {
     console.log("Server is running on PORT : ", process.env.BACKEND_PORT)
