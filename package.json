@@ -7,6 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js"
   },
+  "bin": {
+    "generate-module": "./bin/generateModule.js",
+    "rollback-module": "./bin/rollbackModule.js"
+  },
   "author": "Anas Akhtar ( anasakhtar1337@gmail.com )",
   "license": "ISC",
   "dependencies": {
