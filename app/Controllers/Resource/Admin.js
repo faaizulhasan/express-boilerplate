@@ -1,4 +1,4 @@
-const { getUserImageUrl } = require("../../Helper");
+const { getImageUrl } = require("../../Helper");
 const _ = require("lodash")
 
 class Admin {
@@ -34,7 +34,7 @@ class Admin {
             "slug": record.slug,
             "email": record.email,
             "api_token": api_token,
-            "image_url": getUserImageUrl(record.image_url),
+            "image_url": getImageUrl(record.image_url),
         }
     }
 }

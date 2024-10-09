@@ -106,7 +106,7 @@ class UserController extends RestController {
                 400
             );
 
-
+        user.user_id = user.id
         const userApiToken = UserApiToken.instance()
         await userApiToken.createRecord(this.request, extractFields(user, userApiToken.getFields()))
 
