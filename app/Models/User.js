@@ -322,7 +322,7 @@ class User extends RestModel {
 
     async toggleNotification(user_id) {
         await this.orm.update({
-            is_pushNotification: Sequelize.literal('case when is_pushNotification=0 then 1 else 0 end')
+            push_notification: Sequelize.literal('case when push_notification=0 then 1 else 0 end')
         }, {
             where: {
                 id: user_id

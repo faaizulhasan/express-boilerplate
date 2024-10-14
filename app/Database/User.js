@@ -97,7 +97,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BOOLEAN,
             defaultValue: false,
         },
-        is_pushNotification: {
+        push_notification: {
             type: Sequelize.BOOLEAN,
             defaultValue: true,
         },

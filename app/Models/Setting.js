@@ -8,41 +8,27 @@ class Setting extends RestModel {
   }
 
   getFields() {
-    return ["text","title"];
+    return ["title","gst","platform_fee","app_store_url","play_store_url"];
   }
 
   showColumns() {
-    return ["type","title", 'text'];
+    return ["title","gst","platform_fee","app_store_url","play_store_url"];
   }
 
   exceptUpdateField() {
-    return ["type"];
-  }
-
-
-  async getRecordByType(type) {
-    const record = await this.orm.findOne({
-      where: {
-        type: type,
-        deletedAt: null
-      },
-      orderBy: ["createdAt", "desc"],
-    });
-
-    return _.isEmpty(record) ? {} : record.toJSON();
+    return ["id","createdAt"];
   }
 
 
   async beforeCreateHook(request, params) {
-    params.text = params.text?.trim()
     params.createdAt = new Date()
   }
 
-  async beforeEditHook(request, params, slug) {
-    let exceptUpdateField = this.exceptUpdateField();
-    exceptUpdateField.filter(exceptField => {
-      delete params[exceptField];
+  async getLastRecord(){
+    const result = await this.getModel().findOne({
+      order: [['createdAt', 'DESC']],
     });
+    return result ? result.toJSON() : null;
   }
 }
 

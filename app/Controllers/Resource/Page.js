@@ -1,10 +1,10 @@
 const _ = require("lodash")
 
-class Setting {
+class Page {
 
     static async initResponse(data, request) {
         if (_.isEmpty(data))
-            return {};
+            return data;
 
         let response;
         if (Array.isArray(data)) {
@@ -22,13 +22,13 @@ class Setting {
 
     static jsonSchema(record, request) {
         return {
+            "id": record.id,
+            "slug": record.slug,
             "title": record.title,
-            "gst": record.gst,
-            "platform_fee": record.platform_fee,
-            "app_store_url": record.app_store_url,
-            "play_store_url": record.play_store_url,
+            "content": record.content,
+            "url": record.url,
         }
     }
 }
 
-module.exports = Setting
+module.exports = Page;

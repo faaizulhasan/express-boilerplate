@@ -24,7 +24,7 @@ router.get('/lookup', (req, res) => (new LookupController()).index({ request: re
 
 
 /*----------------------------------   Setting Routes  ------------------------------*/
-router.get('/setting/:type', checkApiToken, (req, res) => (new SettingController()).show({ request: req, response: res }))
+router.get('/setting', checkApiToken, (req, res) => (new SettingController()).index({ request: req, response: res }))
 
 
 /*----------------------------------   OTP Routes  ------------------------------*/
@@ -39,7 +39,7 @@ router.post('/login', checkApiToken, (req, res) => (new UserController()).login(
 router.patch('/device-token', apiAuthentication, (req, res) => (new UserApiTokenController()).update({ request: req, response: res }))
 router.post('/social-login', checkApiToken, (req, res) => (new UserController()).socialLogin({ request: req, response: res }))
 router.patch('/', apiAuthentication, (req, res) => (new UserController()).update({ request: req, response: res }))
-router.patch('/notification', apiAuthentication, (req, res) => (new UserController()).toggleNotification({ request: req, response: res }))
+router.post('/toggle-notification', apiAuthentication, (req, res) => (new UserController()).toggleNotification({ request: req, response: res }))
 router.get('/', apiAuthentication, (req, res) => (new UserController()).getMyProfile({ request: req, response: res }))
 router.post('/forgot-password', checkApiToken, (req, res) => (new UserController()).forgotPassword({ request: req, response: res }))
 router.post('/change-password', apiAuthentication, (req, res) => (new UserController()).changePassword({ request: req, response: res }))
