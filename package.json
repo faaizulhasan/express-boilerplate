@@ -9,7 +9,8 @@
   },
   "bin": {
     "generate-module": "./bin/generateModule.js",
-    "rollback-module": "./bin/rollbackModule.js"
+    "rollback-module": "./bin/rollbackModule.js",
+    "generate-client-token": "./bin/generateClientId.js"
   },
   "author": "TrangoTech Backend Devs",
   "license": "ISC",
