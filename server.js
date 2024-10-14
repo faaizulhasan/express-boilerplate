@@ -13,10 +13,10 @@ const process = require('process');
 
 require('dotenv').config();
 const app = express();
-const { sequelize, user_groups, settings, users, } = require("./app/Database/index")
+const { sequelize, user_groups, users,pages } = require("./app/Database/index")
 
 const { testRouter, userRoutes, controllerRoutes, adminRoutes } = require('./app/routes');
-const { ROLES, UPLOAD_DIRECTORY_MAPPING, UPLOAD_DIRECTORY, SETTING_ENUM, } = require("./app/config/enum");
+const { ROLES, UPLOAD_DIRECTORY_MAPPING, UPLOAD_DIRECTORY} = require("./app/config/enum");
 const FileHandler = require("./app/Libraries/FileHandler/FileHandler");
 const { getUserDirectory, generateHash } = require("./app/Helper");
 
@@ -112,32 +112,26 @@ httpServer.listen(process.env.BACKEND_PORT, () => {
             console.log("Admin Record Created ! ")
 
 
-            const settings_data = [
+            const pages_data = [
                 {
                     title: "Privacy Policy",
-                    type: SETTING_ENUM.PRIVACY_POLICY,
-                    text: "Lorem epsum",
+                    slug: "privacy-policy",
+                    content: "Lorem epsum",
+                    url: "https://trangotech.com/privacy-policy-terms-of-service/",
                     createdAt: new Date()
                 },
                 {
                     title: "Terms And Conditions",
-                    type: SETTING_ENUM.TERMS_AND_CONDITION,
-                    text: "Lorem epsum",
+                    slug: "terms-conditions",
+                    content: "Lorem epsum",
+                    url: "https://trangotech.com/privacy-policy-terms-of-service/",
                     createdAt: new Date()
-
-                }
+                },
             ]
 
 
-            await settings.bulkCreate(settings_data);
-            console.log("Settings Records Created ! ")
-
-
-            // const lookups_type_data = []
-
-
-            // await lookups.bulkCreate(lookups_type_data);
-            // console.log("Lookups Records Created ! ")
+            await pages.bulkCreate(pages_data);
+            console.log("Pages Records Created ! ")
 
         }
 
