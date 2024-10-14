@@ -32,7 +32,6 @@ class UserController extends Controller {
             success: "",
         }
 
-
         let getResetPassReq = await User.instance().getResetPassReq(resetPasswordToken);
         //check reset password link
         if (_.isEmpty(getResetPassReq)) {
@@ -40,6 +39,7 @@ class UserController extends Controller {
             response.redirect('/');
             return;
         }
+
         let expiry_link_date = moment(getResetPassReq.reset_passwords.createdAt).add(1, 'hours');
         //check expiry
         if (moment().unix() > moment(expiry_link_date).unix()) {
@@ -48,7 +48,7 @@ class UserController extends Controller {
             return;
         }
         //delete all api token
-        await UserApiToken.instance().deleteRecord(getResetPassReq.slug);
+        await UserApiToken.instance().deleteRecord(getResetPassReq.id);
 
         getResetPassReq.currentRequestToken = resetPasswordToken
         return response.render('reset-password', getResetPassReq);

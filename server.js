@@ -52,7 +52,7 @@ app.use(function (req, res, next) {
 app.use('/test', testRouter)
 app.use('/api/user', userRoutes)
 app.use('/api/admin', adminRoutes)
-app.use('/api', controllerRoutes)
+app.use('/web', controllerRoutes)
 
 
 app.get("/", (req, res) => res.render("welcome"))

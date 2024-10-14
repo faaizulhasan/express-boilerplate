@@ -11,7 +11,7 @@ class EmailHandler extends Transporter {
 
     async forgotPassword(email, token) {
 
-        const link = baseUrl() + 'api/reset-password/' + token
+        const link = baseUrl() + 'web/reset-password/' + token
 
         let mailOptions = {
             from: constants.MAIL_FROM,
