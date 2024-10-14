@@ -102,7 +102,7 @@ httpServer.listen(process.env.BACKEND_PORT, () => {
                 slug: uuidv4(),
                 user_type: ROLES.ADMIN,
                 name: "Admin",
-                email: "laa@yopmail.com",
+                email: "admin@yopmail.com",
                 password: generateHash("test@123"),
                 device_type: "web",
                 device_token: "123123123"
