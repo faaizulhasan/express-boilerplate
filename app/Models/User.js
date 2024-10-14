@@ -3,7 +3,7 @@ const _ = require("lodash")
 const randomstring = require("randomstring");
 const moment = require("moment")
 
-const { generateHash, generateUniqueFogoId } = require("../Helper");
+const { generateHash } = require("../Helper");
 const RestModel = require("./RestModel")
 const ResetPassword = require("./ResetPassword")
 const emailHandler = require("../Libraries/EmailHandler/EmailHandler");
@@ -33,7 +33,7 @@ class User extends RestModel {
             'firstname', 'lastname', 'name', 'username', 'email', 'mobile_no', 'password',
             'image_url', 'is_mobile_verify', 'mobile_verifyAt', 'is_email_verify', 'email_verifyAt',
             'status', 'is_activated', 'is_blocked', 'login_type', 'platform_type', 'platform_id',
-            'createdAt', 'updatedAt', 'deletedAt','slug','fogo_id'
+            'createdAt', 'updatedAt', 'deletedAt','slug'
         ];
     }
 
@@ -43,7 +43,7 @@ class User extends RestModel {
             'id', 'user_type', 'firstname', 'lastname', 'name', 'username',
             'email', 'mobile_no', 'image_url', 'is_mobile_verify', 'mobile_verifyAt', 'is_email_verify', 'email_verifyAt',
             'status', 'is_activated', 'login_type', 'platform_type', 'platform_id',
-            'is_blocked', 'createdAt','slug','fogo_id'
+            'is_blocked', 'createdAt','slug'
         ];
     }
 
@@ -55,7 +55,7 @@ class User extends RestModel {
             'id', 'user_type',
             'email', 'mobile_no', 'is_email_verify', 'email_verifyAt', 'is_mobile_verify', 'mobile_verifyAt',
             'login_type', 'platform_type', 'platform_id',
-            'createdAt','slug','fogo_id'
+            'createdAt','slug'
         ];
     }
 
@@ -76,7 +76,6 @@ class User extends RestModel {
      */
     async beforeCreateHook(request, params) {
         params.slug = uuidv4();
-        params.fogo_id = generateUniqueFogoId();
         params.user_type = ROLES.USER;
         params.username = params.name;
         params.password = generateHash(params.password)
@@ -142,7 +141,6 @@ class User extends RestModel {
             let password = randomstring.generate(8);
             user = await this.orm.create({
                 slug: uuidv4(),
-                fogo_id: generateUniqueFogoId(),
                 user_type: ROLES.USER,
                 name: params.name,
                 firstname: params.firstname || null,
@@ -209,16 +207,6 @@ class User extends RestModel {
         })
         return !_.isEmpty(query) ? query.toJSON() : {};
     }
-    async getUserByFogoId(fogo_id) {
-        let query = await this.orm.findOne({
-            where: {
-                fogo_id: fogo_id,
-                deletedAt: null
-            }
-        })
-        return !_.isEmpty(query) ? query.toJSON() : {};
-    }
-
     async getUserByPlatformID(platform_type, platform_id) {
         let query = await this.orm.findOne({
             where: {

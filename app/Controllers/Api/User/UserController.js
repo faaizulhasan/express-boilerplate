@@ -110,7 +110,7 @@ class UserController extends RestController {
             }
 
             let rules = {
-                "fogo_id": 'required',
+                "email": 'required|email',
                 "password": 'required',
                 "device_type": "required|in:web,ios,android",
                 "device_token": "required"
@@ -121,11 +121,11 @@ class UserController extends RestController {
                 return validation_error;
 
             let params = this.request.body;
-            let user = await this.modal.getUserByFogoId(params.fogo_id);
+            let user = await this.modal.getUserByEmail(params.email);
 
             if (_.isEmpty(user))
                 return this.sendError(
-                    'This fogo id is not associated with any user',
+                    'This email is not associated with any user',
                     {},
                     400
                 );

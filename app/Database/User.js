@@ -13,11 +13,6 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             unique: true
         },
-        fogo_id: {
-            type: Sequelize.STRING(100),
-            allowNull: false,
-            unique: true
-        },
         user_type: {
             type: Sequelize.STRING(50),
             allowNull: false,
