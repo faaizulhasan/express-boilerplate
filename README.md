@@ -32,3 +32,10 @@ rollback-module <ModuleName>
 ```
 ##### ModuleName:
 The name of the module you want to remove (e.g., User, Product).
+
+## 3. Generate Client Token
+  To generate a new client_id, use the following command:
+
+```bash
+generate-client-token
+```
