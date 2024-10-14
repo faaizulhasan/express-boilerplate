@@ -1,5 +1,5 @@
 {
-  "name": "the-way-backend",
+  "name": "backend-boilerplate",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -11,7 +11,7 @@
     "generate-module": "./bin/generateModule.js",
     "rollback-module": "./bin/rollbackModule.js"
   },
-  "author": "Anas Akhtar ( anasakhtar1337@gmail.com )",
+  "author": "TrangoTech Backend Devs",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.0",
