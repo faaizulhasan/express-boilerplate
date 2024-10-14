@@ -5,7 +5,7 @@ class ChatMessages {
 
     static async initResponse(data, request) {
         if (_.isEmpty(data))
-            return Array.isArray(data) ? [] : {};
+            return data;
 
         let response;
         if (Array.isArray(data)) {

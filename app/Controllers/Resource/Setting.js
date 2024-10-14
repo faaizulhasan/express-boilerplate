@@ -4,7 +4,7 @@ class Setting {
 
     static async initResponse(data, request) {
         if (_.isEmpty(data))
-            return {};
+            return data;
 
         let response;
         if (Array.isArray(data)) {

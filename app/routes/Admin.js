@@ -5,12 +5,20 @@ const CheckApiToken = require("../Middleware/CheckApiToken");
 const AdminApiAuthentication = require("../Middleware/AdminApiAuthentication");
 
 const UserController = require("../Controllers/Api/Admin/UserController");
+const PageController = require("../Controllers/Api/PageController");
 const LookupController = require("../Controllers/Api/Admin/LookupController");
 const LookupDataController = require("../Controllers/Api/Admin/LookupDataController");
 
 /*----------------------------------   Lookups Routes  ------------------------------*/
 router.get('/lookup', AdminApiAuthentication.authenticate, (req, res) => (new LookupController()).index({ request: req, response: res }))
 router.post('/lookup/:id', AdminApiAuthentication.authenticate, (req, res) => (new LookupDataController()).store({ request: req, response: res }))
+
+/*---------------------------------- Page ROUTES ------------------------------*/
+router.get("/page", AdminApiAuthentication.authenticate, (req, res) => (new PageController()).index({ request: req, response: res }))
+router.get("/page/:id", AdminApiAuthentication.authenticate, (req, res) => (new PageController()).show({ request: req, response: res }))
+router.post("/page", AdminApiAuthentication.authenticate, (req, res) => (new PageController()).store({ request: req, response: res }))
+router.patch("/page/:id", AdminApiAuthentication.authenticate, (req, res) => (new PageController()).update({ request: req, response: res }))
+router.delete("/page/:id", AdminApiAuthentication.authenticate, (req, res) => (new PageController()).destroy({ request: req, response: res }))
 
 /*----------------------------------   Account Routes  ------------------------------*/
 router.post('/login', CheckApiToken, (req, res) => (new UserController()).login({ request: req, response: res }))

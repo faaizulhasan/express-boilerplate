@@ -35,8 +35,7 @@ class UserController extends RestController {
         switch (action) {
             case "store":
                 rules = {
-                    firstname: 'required|min:2|max:45',
-                    lastname: 'required|min:2|max:45',
+                    name: 'required|min:2|max:100',
                     username: "min:2|max:45",
                     email: 'required|email|unique:users,email|max:250',
                     mobile_no: [
@@ -111,7 +110,7 @@ class UserController extends RestController {
             }
 
             let rules = {
-                "email": 'required|email',
+                "fogo_id": 'required',
                 "password": 'required',
                 "device_type": "required|in:web,ios,android",
                 "device_token": "required"
@@ -122,18 +121,18 @@ class UserController extends RestController {
                 return validation_error;
 
             let params = this.request.body;
-            let user = await this.modal.getUserByEmail(params.email);
+            let user = await this.modal.getUserByFogoId(params.fogo_id);
 
             if (_.isEmpty(user))
                 return this.sendError(
-                    'This email is not associated with any user',
+                    'This fogo id is not associated with any user',
                     {},
                     400
                 );
 
             if (!compareHash(params.password, user.password))
                 return this.sendError(
-                    "Incorrect email or password",
+                    "Incorrect Password",
                     {},
                     400
                 );

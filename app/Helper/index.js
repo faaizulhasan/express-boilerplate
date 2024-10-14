@@ -161,7 +161,13 @@ const getUserImageUrl = (image_url, type) => {
     }
     return images
 }
+const generateUniqueFogoId = () => {
+    const timestamp = Date.now().toString(); // Current timestamp in milliseconds
+    const randomSuffix = Math.floor(Math.random() * 100); // Generate a random two-digit number
+    const uniqueNumber = parseInt(timestamp.slice(-8) + randomSuffix); // Take the last 8 digits of the timestamp and append the random number
 
+    return uniqueNumber;
+}
 
 module.exports = {
     baseUrl,
@@ -175,5 +181,6 @@ module.exports = {
     compareHash,
     getImageUrl,
     getUserImageUrl,
-    getUploadDirectoryPath
+    getUploadDirectoryPath,
+    generateUniqueFogoId
 }

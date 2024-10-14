@@ -5,7 +5,7 @@ class User {
 
     static async initResponse(data, request) {
         if (_.isEmpty(data))
-            return [];
+            return data;
 
         this.headers = request.headers;
         let response;
@@ -30,13 +30,12 @@ class User {
         return {
             "id": record.id,
             "slug": record.slug,
+            "fogo_id": record.fogo_id,
             "firstname": record.firstname || '',
             "lastname": record.lastname || '',
             "name": record.name || '',
-            "username": record.username || '',
             "email": record.email,
             "image_url": getImageUrl(record.image_url),
-            "country": record.country || '',
             "mobile_no": record.mobile_no,
             "api_token": api_token,
         }

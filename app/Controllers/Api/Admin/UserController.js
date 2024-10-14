@@ -106,9 +106,11 @@ class UserController extends RestController {
                 400
             );
 
-        user.user_id = user.id
-        const userApiToken = UserApiToken.instance()
-        await userApiToken.createRecord(this.request, extractFields(user, userApiToken.getFields()))
+        request.body.user_id = user.id
+        await UserApiToken.instance().createRecord(
+            request,
+            extractFields(request.body, UserApiToken.instance().getFields())
+        )
 
         this.__is_paginate = false;
         await this.sendResponse(
@@ -235,7 +237,7 @@ class UserController extends RestController {
         this.request = request;
         this.response = response;
 
-        this.resource = 'Admin'
+        this.resource = 'AdminProfile'
         this.__is_paginate = false;
         return await this.sendResponse(
             200,

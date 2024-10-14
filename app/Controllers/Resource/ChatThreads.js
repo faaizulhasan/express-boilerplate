@@ -4,10 +4,8 @@ const _ = require("lodash")
 class ChatThreads {
 
     static async initResponse(data, request) {
-        // console.log("Chat Threads Data : ", data?.map(item => item?.ChatMessage_ChatRoomSlug))
-        console.log("Chat thread data : ", data)
         if (_.isEmpty(data))
-            return Array.isArray(data) ? [] : {};
+            return data;
 
         let response;
         if (Array.isArray(data)) {

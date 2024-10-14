@@ -1,7 +1,7 @@
 const { getImageUrl } = require("../../Helper");
 const _ = require("lodash")
 
-class MyProfile {
+class AdminProfile {
 
     static async initResponse(data, request) {
         if (_.isEmpty(data))
@@ -23,24 +23,15 @@ class MyProfile {
 
 
     static jsonSchema(record, request) {
-        let api_token = _.isEmpty(this.headers.authorization)
-            ? Buffer.from(request.api_token).toString('base64')
-            : Buffer.from(request.authorization).toString('base64');
-
         return {
-            "id": record.id,
-            "slug": record.slug,
-            "fogo_id": record.fogo_id,
+            "name": record.name,
             "firstname": record.firstname || '',
             "lastname": record.lastname || '',
-            "name": record.name || '',
+            "slug": record.slug,
             "email": record.email,
             "image_url": getImageUrl(record.image_url),
-            "mobile_no": record.mobile_no,
-            "api_token": api_token,
-            "push_notification": !!record.push_notification
         }
     }
 }
 
-module.exports = MyProfile
+module.exports = AdminProfile;

@@ -11,6 +11,7 @@ const OTPTokenAuthentication = require("../Middleware/OTPTokenAuthentication");
 
 
 const SettingController = require("../Controllers/Api/User/SettingController");
+const PageController = require("../Controllers/Api/PageController");
 const LookupController = require("../Controllers/Api/User/LookupController");
 const UserController = require("../Controllers/Api/User/UserController");
 const UserApiTokenController = require("../Controllers/Api/User/UserApiTokenController");
@@ -26,6 +27,9 @@ router.get('/lookup', (req, res) => (new LookupController()).index({ request: re
 /*----------------------------------   Setting Routes  ------------------------------*/
 router.get('/setting', checkApiToken, (req, res) => (new SettingController()).index({ request: req, response: res }))
 
+/*---------------------------------- Page ROUTES------------------------------*/
+router.get("/page", checkApiToken, (req, res) => (new PageController()).index({ request: req, response: res }))
+router.get("/page/:slug", checkApiToken, (req, res) => (new PageController()).getRecordBySlug({ request: req, response: res }))
 
 /*----------------------------------   OTP Routes  ------------------------------*/
 router.post('/send-otp/mail', checkApiToken, (req, res) => (new UserOTPController()).store({ request: req, response: res }))

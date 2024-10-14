@@ -71,12 +71,16 @@ class Controller {
             obj.code = code;
             obj.message = message;
             obj.data = results;
-            obj.links = links;
+            if (this.__is_paginate){
+                obj.links = links;
+            }
         } else {
             obj.code = code;
             obj.message = message;
             obj.data = results;
-            obj.links = links;
+            if (this.__is_paginate){
+                obj.links = links;
+            }
         }
         this.response.status(code).send(obj);
         return;

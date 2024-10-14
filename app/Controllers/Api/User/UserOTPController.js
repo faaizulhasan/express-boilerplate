@@ -95,8 +95,8 @@ class UserOTPController extends RestController {
          * 
          */
         const rules = {
-            email: 'required|email',
-            mobile_no: 'required',
+            email: 'required_without:mobile_no|email',
+            mobile_no: 'required_without:email',
             otp: "required",
             device_type: "required|in:web,android,ios",
             device_token: "required",

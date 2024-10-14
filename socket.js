@@ -1,12 +1,6 @@
 const io = require("socket.io");
-
-const constants = require("./app/config/constants");
-
 const SocketAuthentication = require("./app/Middleware/SocketAuthentication");
-const MessageController = require("./app/Controllers/Socket/User/MessageController");
-const ChatRoomController = require("./app/Controllers/Socket/User/ChatRoomController");
 const ChatRoomUser = require("./app/Models/ChatRoomUser");
-const ChatRoomUserController = require("./app/Controllers/Socket/User/ChatRoomUserController");
 const ChatListener = require("./app/Listeners/ChatListener");
 
 

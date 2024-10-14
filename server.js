@@ -19,8 +19,6 @@ const { testRouter, userRoutes, controllerRoutes, adminRoutes } = require('./app
 const { ROLES, UPLOAD_DIRECTORY_MAPPING, UPLOAD_DIRECTORY} = require("./app/config/enum");
 const FileHandler = require("./app/Libraries/FileHandler/FileHandler");
 const { getUserDirectory, generateHash } = require("./app/Helper");
-
-const SettingController = require("./app/Controllers/Api/User/SettingController");
 const Socket = require("./socket.js");
 
 /**App Setup */
@@ -30,8 +28,8 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/templates"));
-// app.use('/', express.static('upload'));
-app.use('/' + UPLOAD_DIRECTORY_MAPPING[UPLOAD_DIRECTORY.USER], express.static('upload/' + UPLOAD_DIRECTORY.USER));
+app.use('/', express.static('upload'));
+//app.use('/' + UPLOAD_DIRECTORY_MAPPING[UPLOAD_DIRECTORY.USER], express.static('upload/' + UPLOAD_DIRECTORY.USER));
 
 // Set Cookie Parser, sessions and flash
 app.use(cookieParser('NotSoSecret'));
@@ -58,7 +56,6 @@ app.use('/api', controllerRoutes)
 
 
 app.get("/", (req, res) => res.render("welcome"))
-app.get('/page/:type', (req, res) => (new SettingController()).getPage({ request: req, response: res }))
 app.get("/test-socket", (req, res) => {
     res.render('socket-template');
 })

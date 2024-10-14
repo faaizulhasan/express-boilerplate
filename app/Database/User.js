@@ -13,6 +13,11 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             unique: true
         },
+        fogo_id: {
+            type: Sequelize.STRING(100),
+            allowNull: false,
+            unique: true
+        },
         user_type: {
             type: Sequelize.STRING(50),
             allowNull: false,
@@ -22,23 +27,23 @@ module.exports = (sequelize, Sequelize) => {
             },
         },
         name: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING(200),
             allowNull: true
         },
         username: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING(100),
             allowNull: true
         },
         firstname: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING(100),
             allowNull: true
         },
         lastname: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING(100),
             allowNull: true
         },
         email: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING(100),
             allowNull: true,
         },
         mobile_no: {

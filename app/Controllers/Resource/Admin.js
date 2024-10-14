@@ -5,7 +5,7 @@ class Admin {
 
     static async initResponse(data, request) {
         if (_.isEmpty(data))
-            return [];
+            return data;
 
         this.headers = request.headers;
         let response;

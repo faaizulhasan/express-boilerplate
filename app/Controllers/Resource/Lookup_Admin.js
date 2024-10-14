@@ -4,7 +4,7 @@ class Lookup {
 
     static async initResponse(data, request) {
         if (_.isEmpty(data))
-            return {};
+            return data;
 
         let response = {};
 
