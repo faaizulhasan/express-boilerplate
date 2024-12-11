@@ -34,9 +34,9 @@ class FileHandler {
             let file_data = [];
             let files = fileObject;
             for (var i = 0; i < files.length; i++) {
-                const subtype = fileObject.mimetype.split('/')
+                const subtype = files[i].mimetype.split('/')
                 let filename = `${new Date().getTime()}.${subtype[subtype.length - 1]}`;
-                fs.writeFileSync(destination_upload_path + filename, fileObject);
+                fs.writeFileSync(destination_upload_path + filename, files[I].buffer);
 
                 file_data.push(filename);
             }
