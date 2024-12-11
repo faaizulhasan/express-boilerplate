@@ -12,7 +12,7 @@ const getUserDirectory = () => {
     return 'upload/' + UPLOAD_DIRECTORY.USER + '/';
 }
 const getUploadDirectoryPath = (module) => {
-    return 'upload/' + module + '/';
+    return 'uploads/' + module + '/';
 }
 const isJSON = (str) => {
     try {
