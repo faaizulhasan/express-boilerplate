@@ -20,15 +20,16 @@ class FileHandler {
     }
 
     static async uploadFileInLocal(fileObject, destination_upload_path, resize) {
-        if (!fs.existsSync(destination_upload_path)) {
-            fs.mkdirSync(destination_upload_path, { recursive: true });
+        const original_destination_upload_path = "uploads/" + destination_upload_path+"/";
+        if (!fs.existsSync(original_destination_upload_path)) {
+            fs.mkdirSync(original_destination_upload_path, { recursive: true });
         }
         if (!Array.isArray(fileObject)) {
             const subtype = fileObject.mimetype.split('/')
             let filename = `${new Date().getTime()}.${subtype[subtype.length - 1]}`;
-            fs.writeFileSync(destination_upload_path + filename, fileObject.buffer);
+            fs.writeFileSync(original_destination_upload_path + filename, fileObject.buffer);
 
-            return filename;
+            return destination_upload_path+"/"+filename;
         } else {
             //multiple file upload
             let file_data = [];
@@ -36,9 +37,9 @@ class FileHandler {
             for (var i = 0; i < files.length; i++) {
                 const subtype = files[i].mimetype.split('/')
                 let filename = `${new Date().getTime()}.${subtype[subtype.length - 1]}`;
-                fs.writeFileSync(destination_upload_path + filename, files[I].buffer);
+                fs.writeFileSync(original_destination_upload_path + filename, files[I].buffer);
 
-                file_data.push(filename);
+                file_data.push(destination_upload_path+"/"+filename);
             }
             return file_data;
         }

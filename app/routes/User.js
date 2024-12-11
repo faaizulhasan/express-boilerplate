@@ -15,9 +15,33 @@ const PageController = require("../Controllers/Api/PageController");
 const LookupController = require("../Controllers/Api/User/LookupController");
 const UserController = require("../Controllers/Api/User/UserController");
 const UserApiTokenController = require("../Controllers/Api/User/UserApiTokenController");
+const NotificationController = require("../Controllers/Api/NotificationController");
 
 
+/*----------------------------------  Notification Routes  ------------------------------*/
+router.get('/notifications', apiAuthentication, (req, res) => (new NotificationController()).index({
+    request: req,
+    response: res
+}))
+router.get('/get-unread-count', apiAuthentication, (req, res) => (new NotificationController()).getUnreadCount({
+    request: req,
+    response: res
+}))
+router.post('/mark-all-read', apiAuthentication, (req, res) => (new NotificationController()).markAllRead({
+    request: req,
+    response: res
+}))
+router.post('/mark-single-read/:id', apiAuthentication, (req, res) => (new NotificationController()).markSingleRead({
+    request: req,
+    response: res
+}))
+router.post('/send-test-notification', apiAuthentication, (req, res) => (new NotificationController()).sendTestNotification({
+    request: req,
+    response: res
+}))
 
+/*---------------------------------- Attachments ROUTES ------------------------------*/
+router.post('/upload-attachments', apiAuthentication, (req, res) => (new UserController()).uploadAttachments({ request: req, response: res }))
 
 
 /*----------------------------------   Lookups Routes  ------------------------------*/

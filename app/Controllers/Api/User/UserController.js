@@ -541,6 +541,33 @@ class UserController extends RestController {
         )
     }
 
+    async uploadAttachments({ request, response }) {
+        try {
+            this.request = request;
+            this.response = response;
+
+            if (!request.files?.length) {
+                throw new Error("Files are required");
+            }
+            if (!request.body?.path) {
+                throw new Error("path is required");
+            }
+            const fileObjects = request.files;
+            const files = await FileHandler.doUpload(fileObjects, request.body?.path)
+            this.__collection = false;
+            this.__is_paginate = false;
+            return this.sendResponse(200, "Files uploaded successfully", files);
+        }
+        catch (err) {
+            console.log(err)
+            return this.sendError(
+                "Failed to upload files",
+                {},
+                500
+            )
+        }
+    }
+
 
 
 }

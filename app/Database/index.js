@@ -38,6 +38,7 @@ db.settings = require("./Setting.js")(sequelize, Sequelize);
 db.lookups = require("./Lookup.js")(sequelize, Sequelize);
 db.lookup_data = require("./LookupData.js")(sequelize, Sequelize);
 db.pages = require("./Page.js")(sequelize, Sequelize);
+db.notifications = require("./Notification.js")(sequelize, Sequelize);
 
 /* chat room models */
 db.chat_rooms = require('./ChatRooms.js')(sequelize, Sequelize)
