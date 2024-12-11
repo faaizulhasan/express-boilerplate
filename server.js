@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/templates"));
-app.use('/', express.static('upload'));
+app.use('/', express.static('uploads'));
 //app.use('/' + UPLOAD_DIRECTORY_MAPPING[UPLOAD_DIRECTORY.USER], express.static('upload/' + UPLOAD_DIRECTORY.USER));
 
 // Set Cookie Parser, sessions and flash
