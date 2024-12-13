@@ -139,7 +139,7 @@ class UserController extends RestController {
 
 
         //get user by email
-        let user = await this.modal.getAdminByEmail(params.email);
+        let user = await this.modal.getUserByEmail(params.email);
         if (_.isEmpty(user))
             return this.sendError(
                 'This email is not associated with any user.',

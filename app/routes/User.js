@@ -16,6 +16,7 @@ const LookupController = require("../Controllers/Api/User/LookupController");
 const UserController = require("../Controllers/Api/User/UserController");
 const UserApiTokenController = require("../Controllers/Api/User/UserApiTokenController");
 const NotificationController = require("../Controllers/Api/NotificationController");
+const AdminUserController = require("../Controllers/Api/Admin/UserController");
 
 
 /*----------------------------------  Notification Routes  ------------------------------*/
@@ -74,6 +75,7 @@ router.post('/change-password', apiAuthentication, (req, res) => (new UserContro
 router.post('/set-password', OTPTokenAuthentication.authenticate, (req, res) => (new UserController()).setNewPassword({ request: req, response: res }))
 router.post('/logout', apiAuthentication, (req, res) => (new UserController()).logout({ request: req, response: res }))
 router.delete('/', checkApiToken, apiAuthentication, (req, res) => (new UserController()).destroy({ request: req, response: res }))
+router.post('/forgot-password-link', checkApiToken, (req, res) => (new AdminUserController()).forgotPassword({ request: req, response: res }))
 
 
 module.exports = router;
