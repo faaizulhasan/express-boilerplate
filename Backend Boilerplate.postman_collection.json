@@ -577,7 +577,80 @@
 				},
 				{
 					"name": "Setting",
-					"item": []
+					"item": [
+						{
+							"name": "Get Settings",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}api/user/setting",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"setting"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Upload Attachment",
+					"item": [
+						{
+							"name": "Upload Attachment",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": "/C:/Users/faaiz.hassan/Desktop/user-placeholder.jpeg"
+										},
+										{
+											"key": "path",
+											"value": "user",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}api/user/upload-attachments",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"upload-attachments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			],
 			"auth": {
