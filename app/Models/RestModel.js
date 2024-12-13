@@ -60,6 +60,9 @@ class RestModel {
     async getRecords(request, params = {}) {
         const page = _.isEmpty(request.query.page) ? 0 : parseInt(request.query.page) - 1;
         const limit = _.isEmpty(request.query.limit) ? constants.PAGINATION_LIMIT : parseInt(request.query.limit);
+        const orderBy = request?.query?.orderBy ? request.query.orderBy : "id";
+        const order = request?.query?.order ? request.query.order : "DESC";
+        const is_paginate = request?.query?.is_paginate && request?.query?.is_paginate == "false" ? false : true;
 
         let query = {
             where: {
@@ -75,8 +78,10 @@ class RestModel {
 
         query = {
             ...query,
-            limit: limit,
-            offset: page * limit
+            ...(is_paginate && { limit: limit, offset: page * limit }),
+            order: [
+                [orderBy, order]
+            ]
         }
 
         const { rows, count } = await this.orm.findAndCountAll(query)
