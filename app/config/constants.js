@@ -24,4 +24,7 @@ module.exports = {
     USER_UPLOAD_DIRECTORY: 'user',
 
     NOTIFICATION_DRIVER: process.env.NOTIFICATION_DRIVER || "Firebase",
+    SERVICE_ACCOUNT: {
+
+    }
 }

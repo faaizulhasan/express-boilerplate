@@ -3,11 +3,16 @@ const admin = require("firebase-admin");
 const constants = require("../../config/constants");
 const { isJSON } = require("../../Helper");
 
-admin.initializeApp({
-    credential: admin.credential.cert(constants.SERVICE_ACCOUNT),
-});
+
 
 class Firebase {
+    constructor() {
+        if (!admin.apps.length) {
+            admin.initializeApp({
+                credential: admin.credential.cert(constants.SERVICE_ACCOUNT)
+            });
+        }
+    }
     async sendPush(token, title, message, payload, badge, mutableContent, contentAvailable, image_url = '') {
         var notification_payload = {
             data: isJSON(payload) ? JSON.parse(payload) : {},
