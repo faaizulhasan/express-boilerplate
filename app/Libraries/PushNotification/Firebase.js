@@ -40,5 +40,25 @@ class Firebase {
             .messaging()
             .send(notification_payload)
     }
+
+    async sendPushNotification(registrationTokens, notification, data = {}) {
+        const message = {
+            notification: {
+                title: notification.title,
+                body: notification.body
+            },
+            data: data,
+        };
+
+        try {
+            message.token = registrationTokens;
+            const response = await admin.messaging().send(message);
+            console.log('Successfully sent notification:', response);
+            console.log('response:', response.responses);
+            return response;
+        } catch (error) {
+            console.error('Error sending notification:', error);
+        }
+    }
 }
 module.exports = Firebase;
