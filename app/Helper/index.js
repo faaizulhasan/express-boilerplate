@@ -9,7 +9,7 @@ const baseUrl = () => {
 
 
 const getUserDirectory = () => {
-    return 'upload/' + UPLOAD_DIRECTORY.USER + '/';
+    return 'uploads/' + UPLOAD_DIRECTORY.USER + '/';
 }
 const getUploadDirectoryPath = (module) => {
     return 'uploads/' + module + '/';

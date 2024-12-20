@@ -106,6 +106,23 @@ class UserApiToken extends RestModel {
         return true;
 
     }
+
+    async updateDeviceToken(request){
+        const api_token = request.authorization;
+        const user_id = request.user.id;
+
+        await this.orm.update({
+            device_type: request.body.device_type,
+            device_token: request.body.device_token,
+        },{
+            where: {
+                api_token: api_token,
+                user_id: user_id,
+                deletedAt: null,
+            },
+            order: [['createdAt', 'desc']]
+        });
+    }
 }
 
 module.exports = UserApiToken;

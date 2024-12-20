@@ -568,6 +568,28 @@ class UserController extends RestController {
         }
     }
 
+    async updateDeviceToken({request, response}){
+        try {
+            this.request = request;
+            this.response = response;
+            let rules = {
+                "device_type": "required",
+                "device_token": "required"
+            }
+            let validator = await validateAll(request.body, rules);
+            let validation_error = this.validateRequestParams(validator);
+            if (this.__is_error)
+                return validation_error;
+
+            await UserApiToken.instance().updateDeviceToken(request);
+
+            return this.sendResponse(200,"Device Token Updated Successfully",{})
+        }catch (e) {
+            console.log(e)
+            return this.sendError(e.message,{},400)
+        }
+    }
+
 
 
 }

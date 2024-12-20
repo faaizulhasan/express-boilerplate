@@ -73,6 +73,7 @@ router.get('/', apiAuthentication, (req, res) => (new UserController()).getMyPro
 router.post('/forgot-password', checkApiToken, (req, res) => (new UserController()).forgotPassword({ request: req, response: res }))
 router.post('/change-password', apiAuthentication, (req, res) => (new UserController()).changePassword({ request: req, response: res }))
 router.post('/set-password', OTPTokenAuthentication.authenticate, (req, res) => (new UserController()).setNewPassword({ request: req, response: res }))
+router.post('/update-device-token', apiAuthentication, (req, res) => (new UserController()).updateDeviceToken({ request: req, response: res }))
 router.post('/logout', apiAuthentication, (req, res) => (new UserController()).logout({ request: req, response: res }))
 router.delete('/', checkApiToken, apiAuthentication, (req, res) => (new UserController()).destroy({ request: req, response: res }))
 router.post('/forgot-password-link', checkApiToken, (req, res) => (new AdminUserController()).forgotPassword({ request: req, response: res }))
