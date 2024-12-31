@@ -55,7 +55,9 @@ class Notification extends RestModel {
     }
     async afterCreateHook(record, request, params) {
         try {
-            if (!request?.user?.push_notification) return;
+            const userData = await User.instance().getUserByID(record.user_id);
+            if (!userData?.push_notification) return;
+
             const user = await User.instance().getModel().findOne({
                 include: [
                     {

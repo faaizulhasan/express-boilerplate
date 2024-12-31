@@ -197,7 +197,16 @@ class User extends RestModel {
         })
         return !_.isEmpty(query) ? query.toJSON() : {};
     }
-
+    async getUserByID(user_slug) {
+        let query = await this.orm.findOne({
+            where: {
+                slug: user_slug,
+                deletedAt: null,
+            },
+            raw: true
+        });
+        return query;
+    }
     async getUserByMobileNo(mobile_no) {
         let query = await this.orm.findOne({
             where: {
