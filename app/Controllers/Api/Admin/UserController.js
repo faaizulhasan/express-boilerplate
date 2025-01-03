@@ -48,7 +48,7 @@ class UserController extends RestController {
     }
 
     async beforeUpdateLoadModel() {
-        this.params.id = this.request.user.slug;
+        this.params.id = this.request.user.id;
         if (!this.request.files?.length) return
 
         try {
@@ -251,8 +251,8 @@ class UserController extends RestController {
         this.request = request;
         this.response = response;
 
-        const user_slug = request.user.slug;
-        const record = await UserApiToken.instance().deleteRecord(user_slug);
+        const user_id = request.user.id;
+        const record = await UserApiToken.instance().deleteRecord(user_id);
 
         this.__is_paginate = false;
         this.__collection = false;
