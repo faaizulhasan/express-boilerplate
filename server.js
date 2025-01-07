@@ -44,6 +44,19 @@ app.use(function (req, res, next) {
     res.locals.message = req.flash();
     next();
 });
+// Error handling middleware
+app.use((err, req, res, next) => {
+    if (err) {
+        console.log("err:",err)
+        res.status(500).send({
+            code: 500,
+            message: err.message,
+            data: {},
+        });
+    } else {
+        next();
+    }
+});
 
 
 
