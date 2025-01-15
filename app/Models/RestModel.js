@@ -131,6 +131,39 @@ class RestModel {
         }
     }
 
+    async getRecordBySlug(request, slug) {
+        let query = {
+            where: {
+                deletedAt: null,
+            },
+            attributes: this.showColumns(),
+        }
+        //query hook
+        if (_.isFunction(this.singleQueryHook)) {
+            await this.singleQueryHook(query, request, slug);
+        }
+
+        //Add Slug Condition
+        query = {
+            ...query,
+            where: {
+                ...query.where,
+                slug: slug
+            }
+        }
+
+        //get record;
+        console.log("Generated Query : ", query)
+        let record = await this.orm.findOne(query)
+
+
+        console.log('Get Record By Slug Result : ', record?.toJSON())
+        if (!_.isEmpty(record)) {
+            return record.toJSON();
+        } else {
+            return {};
+        }
+    }
 
     async getRecordByCondition(request, conditions) {
         let query = {
