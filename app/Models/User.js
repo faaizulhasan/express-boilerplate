@@ -33,7 +33,7 @@ class User extends RestModel {
             'firstname', 'lastname', 'name', 'username', 'email', 'mobile_no', 'password',
             'image_url', 'is_mobile_verify', 'mobile_verifyAt', 'is_email_verify', 'email_verifyAt',
             'status', 'is_activated', 'is_blocked', 'login_type', 'platform_type', 'platform_id',
-            'createdAt', 'updatedAt', 'deletedAt','slug'
+            'createdAt', 'updatedAt', 'deletedAt', 'slug'
         ];
     }
 
@@ -43,7 +43,7 @@ class User extends RestModel {
             'id', 'user_type', 'firstname', 'lastname', 'name', 'username',
             'email', 'mobile_no', 'image_url', 'is_mobile_verify', 'mobile_verifyAt', 'is_email_verify', 'email_verifyAt',
             'status', 'is_activated', 'login_type', 'platform_type', 'platform_id',
-            'is_blocked', 'createdAt','slug'
+            'is_blocked', 'createdAt', 'slug'
         ];
     }
 
@@ -55,7 +55,7 @@ class User extends RestModel {
             'id', 'user_type',
             'email', 'mobile_no', 'is_email_verify', 'email_verifyAt', 'is_mobile_verify', 'mobile_verifyAt',
             'login_type', 'platform_type', 'platform_id',
-            'createdAt','slug'
+            'createdAt', 'slug'
         ];
     }
 
@@ -126,14 +126,13 @@ class User extends RestModel {
 
     async socialLogin(request) {
         let user;
-        let socialUser;
         let params = request.body;
 
         if (!_.isEmpty(params.email)) {
             user = await this.getUserByEmail(params.email);
         }
         if (_.isEmpty(user)) {
-            socialUser = await this.getUserByPlatformID(params.platform_type, params.platform_id);
+            user = await this.getUserByPlatformID(params.platform_type, params.platform_id);
         }
 
         //add new user
