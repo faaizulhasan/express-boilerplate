@@ -197,10 +197,10 @@ class User extends RestModel {
         })
         return !_.isEmpty(query) ? query.toJSON() : {};
     }
-    async getUserByID(user_slug) {
+    async getUserByID(user_id) {
         let query = await this.orm.findOne({
             where: {
-                slug: user_slug,
+                id: user_id,
                 deletedAt: null,
             },
             raw: true
