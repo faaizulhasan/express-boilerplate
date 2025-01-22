@@ -72,8 +72,8 @@ class UserController extends RestController {
 
         try {
             const fileObject = this.request.files;
-            const image_url = await FileHandler.doUpload(fileObject[0], getUploadDirectoryPath(UPLOAD_DIRECTORY.USER))
-            this.request.image_url = UPLOAD_DIRECTORY.USER + "/" + image_url
+            const image_url = await FileHandler.doUpload(fileObject[0], UPLOAD_DIRECTORY.USER)
+            this.request.image_url = image_url
             return
         }
         catch (err) {

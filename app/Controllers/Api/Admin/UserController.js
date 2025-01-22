@@ -1,6 +1,6 @@
 const _ = require("lodash")
 const { validateAsync, validateAll, compareHash, extractFields, generateHash, getUserDirectory } = require("../../../Helper");
-const { LOGIN_TYPE } = require("../../../config/enum");
+const { LOGIN_TYPE,UPLOAD_DIRECTORY } = require("../../../config/enum");
 
 const UserApiToken = require("../../../Models/UserApiToken");
 
@@ -53,7 +53,7 @@ class UserController extends RestController {
 
         try {
             const fileObject = this.request.files;
-            const image_url = await FileHandler.doUpload(fileObject[0], getUserDirectory())
+            const image_url = await FileHandler.doUpload(fileObject[0], UPLOAD_DIRECTORY.USER)
             this.request.image_url = image_url
             return
         }
