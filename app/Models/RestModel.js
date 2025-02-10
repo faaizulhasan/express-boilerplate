@@ -52,6 +52,7 @@ class RestModel {
             console.log("Create Record Model Error ", err)
             if (request.transaction) {
                 await request.transaction.rollback()
+                request.transaction = null;
             }
             throw new Error(err?.sqlMessage)
         }
@@ -228,11 +229,6 @@ class RestModel {
                 await this.afterEditHook(record, request, params);
             }
 
-            if (request.transaction) {
-                await request.transaction.commit();
-                request.transaction = null
-            }
-
             record = await this.getRecordById(request, id);
             return record;
         }
@@ -240,6 +236,7 @@ class RestModel {
             console.log("Update Record Model Error ", err)
             if (request.transaction) {
                 await request.transaction.rollback()
+                request.transaction = null;
             }
             throw new Error(err?.sqlMessage)
         }
@@ -297,16 +294,13 @@ class RestModel {
             if (_.isFunction(this.afterDeleteHook)) {
                 await this.afterDeleteHook(request, params, id);
             }
-            if (request.transaction) {
-                await request.transaction.commit();
-                request.transaction = null
-            }
             return true;
         }
         catch (err) {
             console.log("Delete Record Model Error ", err)
             if (request.transaction) {
                 await request.transaction.rollback()
+                request.transaction = null;
             }
             throw new Error(err?.sqlMessage)
         }
