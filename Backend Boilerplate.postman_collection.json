@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "723ad886-9a9d-44cb-96be-d63bde15f40e",
+		"_postman_id": "4c449b95-bfa9-4312-875d-01e705eb35fa",
 		"name": "Backend Boilerplate",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "37296943"
@@ -645,6 +645,124 @@
 									"path": [
 										"user",
 										"upload-attachments"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Notifications",
+					"item": [
+						{
+							"name": "Get All",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}api/user/notifications",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Unread Count",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}api/user/get-unread-count",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"get-unread-count"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mark All Read",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}api/user/mark-all-read",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"mark-all-read"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mark Single Read",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{api_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}api/user/mark-single-read/22",
+									"host": [
+										"{{base_url}}api"
+									],
+									"path": [
+										"user",
+										"mark-single-read",
+										"22"
 									]
 								}
 							},

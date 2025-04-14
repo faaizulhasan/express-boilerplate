@@ -23,18 +23,47 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
 });
 
 // Function to fetch columns from a table
-const getColumns = async (tableName) => {
+const getTableSchema = async (tableName) => {
     try {
-        const [results] = await sequelize.query(`SHOW COLUMNS FROM ${tableName}`);
-        return results;
+        // Get columns
+        const [columns] = await sequelize.query(`SHOW COLUMNS FROM ${tableName}`);
+        // Get foreign keys with reference details
+        const [foreignKeys] = await sequelize.query(`SELECT
+        COLUMN_NAME,
+            REFERENCED_TABLE_NAME,
+            REFERENCED_COLUMN_NAME
+        FROM
+        INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+        WHERE
+        TABLE_NAME = '${tableName}'
+        AND TABLE_SCHEMA = '${dbConfig.DB}'
+        AND REFERENCED_TABLE_NAME IS NOT NULL;`);
+
+
+        // Map foreign keys by column name
+        const fkMap = Object.fromEntries(foreignKeys.map(fk => [fk.COLUMN_NAME, fk]));
+
+        // Merge foreign key info into columns
+        const enriched = columns.map(col => {
+            const ref = fkMap[col.Field];
+            if (ref) {
+                col.ReferencedTable = ref.REFERENCED_TABLE_NAME;
+                col.ReferencedColumn = ref.REFERENCED_COLUMN_NAME;
+                col.onUpdate = ref.UPDATE_RULE;
+                col.onDelete = ref.DELETE_RULE;
+            }
+            return col;
+        });
+
+        return enriched;
     } catch (err) {
-        console.error('Error fetching columns:', err);
+        console.error('Error fetching table schema:', err);
         process.exit(1);
     }
 };
 
 const generateModule = async (moduleName, tableName) => {
-    const columns = await getColumns(tableName);
+    const columns = await getTableSchema(tableName);
     if (!columns) return;
     await generateDatabaseFile(moduleName, tableName,columns);
     await generateModelFile(moduleName, tableName,columns);
@@ -51,10 +80,18 @@ const generateDatabaseFile = async (moduleName, tableName,columns) => {
         const autoIncrement = col.Extra.includes('auto_increment') ? 'autoIncrement: true,' : '';
         const unique = col.Key === 'UNI' ? 'unique: true,' : '';
         const defaultValue = col.Default ? col.Default === 'CURRENT_TIMESTAMP' ? 'defaultValue: Sequelize.NOW,' : "defaultValue: "+col.Default+"," : "";
+        const reference = col.ReferencedTable ? `
+        references: {
+            model: '${col.ReferencedTable}',
+            key: '${col.ReferencedColumn || 'id'}'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+        ` : '';
         return `
         ${col.Field}: {
             type: Sequelize.${mapDataType(col.Type)},
-            ${[primaryKey, autoIncrement, unique,defaultValue].filter(Boolean).join('\n            ')}
+            ${[primaryKey, autoIncrement, unique,defaultValue, reference].filter(Boolean).join('\n            ')}
             allowNull: ${col.Null === 'YES'}
         }`.trim();
     }).join(',\n    ');
@@ -125,6 +162,10 @@ class ${moduleName} extends RestModel {
         return [${fields.map(item => `"${item}"`).join(', ')}];
     }
 
+    exceptUpdateField() {
+        return [${fields.map(item => `"${item}"`).join(', ')}];
+    }
+    
     /**
      * Hook for manipulate query of index result
      * @param {current mongo query} query
@@ -140,7 +181,12 @@ class ${moduleName} extends RestModel {
     async beforeCreateHook(request, params) {
    
     }
-
+    async beforeEditHook(request, params, slug) {
+        let exceptUpdateField = this.exceptUpdateField();
+        exceptUpdateField.filter(exceptField => {
+            delete params[exceptField];
+        });
+    }
     async beforeEditHook(request, params, slug) {
    
     }
@@ -354,7 +400,7 @@ const generateRoutes = async (moduleName) => {
     const routesTemplate = `
     
 const ${moduleName}Controller = require("../Controllers/Api/${moduleName}Controller");
-/*---------------------------------- ${moduleName} ROUTES------------------------------*/
+/*---------------------------------- ${moduleName} ROUTES ------------------------------*/
 router.get("/${_.kebabCase(moduleName)}", apiAuthentication, (req, res) => (new ${moduleName}Controller()).index({ request: req, response: res }))
 router.get("/${_.kebabCase(moduleName)}/:id", apiAuthentication, (req, res) => (new ${moduleName}Controller()).show({ request: req, response: res }))
 router.post("/${_.kebabCase(moduleName)}", apiAuthentication, (req, res) => (new ${moduleName}Controller()).store({ request: req, response: res }))
