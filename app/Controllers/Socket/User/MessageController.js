@@ -2,6 +2,7 @@ const { extractFields, getImageUrl, validateAll } = require("../../../Helper");
 const ChatMessageStatus = require("../../../Models/ChatMessageStatus");
 const ChatRoom = require("../../../Models/ChatRoom");
 const ChatRoomUser = require("../../../Models/ChatRoomUser");
+const Notification = require("../../../Models/Notification");
 const Post = require("../../../Models/Post");
 const { POST_TYPE, NOTIFICATION_TYPES } = require("../../../config/constants");
 const {
@@ -81,13 +82,6 @@ class MessageController extends SocketRestController {
 
             this.socket.chat_room_record = chat_room_record;
         } else {
-            if (params.instance_type === CHAT_MESSAGE_INSTANCE_TYPE.STORIES) {
-                const record = await Post.instance().getRecordByCondition(this.socket, { id: params.instance_id, type: POST_TYPE.MEMORIES });
-                if (_.isEmpty(record)) {
-                    params.instance_type = null;
-                    params.instance_id = null;
-                }
-            }
             record = await ChatRoomUser.instance().findRoomAgainstUsers(
                 this.socket.user.id,
                 params.target_user_id
@@ -154,17 +148,17 @@ class MessageController extends SocketRestController {
 
         for (let i = 0; i < chat_room_users.length; i++) {
             const roomUser = chat_room_users[i];
-
+            if (roomUser.user_id === this.socket.user.id) continue;
             const notificationPayload = {}
             notificationPayload.user_id = roomUser.user_id;
             notificationPayload.type = NOTIFICATION_TYPES.CHAT_MESSAGE;
-            notificationPayload.title = `${this.spcket.user.firstname} ${this.socket.user.lastname} sent a message`;
+            notificationPayload.title = `${this.socket.user.firstname} ${this.socket.user.lastname} sent a message`;
             notificationPayload.message = this.socket.body.message ? this.socket.body.message : "Attachment";
             notificationPayload.payload = {
                 ref_type: String(NOTIFICATION_TYPES.CHAT_MESSAGE),
             }
 
-            await Notification.instance().createRecord(request, notificationPayload);
+            await Notification.instance().createRecord(this.socket, notificationPayload);
         }
     }
 
