@@ -325,7 +325,18 @@ class User extends RestModel {
         return _.isEmpty(record) ? {} : record.toJSON()
     }
 
-
+    async validateUser(user_id) {
+        const record = await this.orm.findOne({
+            where: {
+                id: user_id,
+                user_type: ROLES.USER,
+                is_activated: true,
+                is_blocked: false,
+                deletedAt: null
+            }
+        })
+        return _.isEmpty(record) ? {} : record.toJSON()
+    }
 
     async toggleNotification(user_id) {
         await this.orm.update({

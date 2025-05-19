@@ -162,6 +162,16 @@ const getUserImageUrl = (image_url, type) => {
     return images
 }
 
+
+const removeBaseUrl = (text = "") => {
+    if (Array.isArray(text)) {
+        return text.map((item) => item.replace(baseUrl(), ""));
+    } else {
+        return text.replace(baseUrl(), "");
+    }
+};
+
+
 module.exports = {
     baseUrl,
     getUserDirectory,
@@ -174,5 +184,6 @@ module.exports = {
     compareHash,
     getImageUrl,
     getUserImageUrl,
-    getUploadDirectoryPath
+    getUploadDirectoryPath,
+    removeBaseUrl
 }
