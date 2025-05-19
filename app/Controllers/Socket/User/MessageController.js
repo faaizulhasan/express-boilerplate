@@ -3,7 +3,7 @@ const ChatMessageStatus = require("../../../Models/ChatMessageStatus");
 const ChatRoom = require("../../../Models/ChatRoom");
 const ChatRoomUser = require("../../../Models/ChatRoomUser");
 const Post = require("../../../Models/Post");
-const { POST_TYPE } = require("../../../config/constants");
+const { POST_TYPE, NOTIFICATION_TYPES } = require("../../../config/constants");
 const {
     CHAT_ROOM_TYPE_ENUM,
     MESSAGE_TYPE_ENUM,
@@ -74,11 +74,12 @@ class MessageController extends SocketRestController {
                 );
             }
 
-            if (chat_room_record.can_memberSendMessage) return;
-            if (!user_record.is_owner && !user_record.is_subAdmin) {
+            if (!chat_room_record.can_memberSendMessage && !user_record.is_owner && !user_record.is_subAdmin) {
                 this.__is_error = true;
                 return this.sendError("Only admin are able to send message ", {}, 400);
             }
+
+            this.socket.chat_room_record = chat_room_record;
         } else {
             if (params.instance_type === CHAT_MESSAGE_INSTANCE_TYPE.STORIES) {
                 const record = await Post.instance().getRecordByCondition(this.socket, { id: params.instance_id, type: POST_TYPE.MEMORIES });
@@ -144,6 +145,27 @@ class MessageController extends SocketRestController {
             this.socket.body.chat_room_id
         );
         return;
+    }
+
+    async afterStoreReturnHook() {
+        let chat_room_users = await ChatRoomUser.instance().getRoomUsers(
+            this.socket.body.chat_room_id
+        );
+
+        for (let i = 0; i < chat_room_users.length; i++) {
+            const roomUser = chat_room_users[i];
+
+            const notificationPayload = {}
+            notificationPayload.user_id = roomUser.user_id;
+            notificationPayload.type = NOTIFICATION_TYPES.CHAT_MESSAGE;
+            notificationPayload.title = `${this.spcket.user.firstname} ${this.socket.user.lastname} sent a message`;
+            notificationPayload.message = this.socket.body.message ? this.socket.body.message : "Attachment";
+            notificationPayload.payload = {
+                ref_type: String(NOTIFICATION_TYPES.CHAT_MESSAGE),
+            }
+
+            await Notification.instance().createRecord(request, notificationPayload);
+        }
     }
 
     async sendMessage({ io, socket }) {

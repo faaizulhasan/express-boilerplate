@@ -71,45 +71,63 @@ class SocketRestController extends SocketController {
      * @param {Response} ctx.response
      */
     async store({ io, socket }) {
-        this.io = io;
-        this.socket = socket;
-        this.emitter = [];
-        //validation
-        if (_.isFunction(this.validation)) {
-            let validator = await this.validation("store");
-            if (!_.isEmpty(validator) && validator.fails()) {
-                this.sendError(
-                    this.setValidatorMessagesResponse(validator),
-                    {},
-                    400
-                )
-                return;
+        try {
+            this.io = io;
+            this.socket = socket;
+            this.emitter = [];
+            //validation
+            if (_.isFunction(this.validation)) {
+                let validator = await this.validation("store");
+                if (!_.isEmpty(validator) && validator.fails()) {
+                    this.sendError(
+                        this.setValidatorMessagesResponse(validator),
+                        {},
+                        400
+                    )
+                    return;
+                }
             }
-        }
-        // before store hook
-        if (_.isFunction(this.beforeStoreLoadModel)) {
-            var hookResponse = await this.beforeStoreLoadModel();
-            if (this.__is_error) {
-                return hookResponse;
+            // before store hook
+            if (_.isFunction(this.beforeStoreLoadModel)) {
+                var hookResponse = await this.beforeStoreLoadModel();
+                if (this.__is_error) {
+                    return hookResponse;
+                }
             }
-        }
-        let record = await this.modal.createRecord(socket, extractFields(socket.body, this.modal.getFields()));
+            let record = await this.modal.createRecord(socket, extractFields(socket.body, this.modal.getFields()));
+            let data = record;
+            // after store hook
+            if (_.isFunction(this.afterStoreLoadModel)) {
+                var afterHookResponse = await this.afterStoreLoadModel(record);
+                if (typeof afterHookResponse != 'undefined') {
+                    record = afterHookResponse;
+                }
+            }
+            this.__is_paginate = false;
+            await this.sendResponse(
+                200,
+                'Store record successfully!.',
+                record
+            );
 
-        // after store hook
-        if (_.isFunction(this.afterStoreLoadModel)) {
-            var afterHookResponse = await this.afterStoreLoadModel(record);
-            if (typeof afterHookResponse != 'undefined') {
-                record = afterHookResponse;
+            // after store return hook
+            if (_.isFunction(this.afterStoreReturnHook)) {
+                try { await this.afterStoreReturnHook(data); }
+                catch (err) {
+                    console.log(err)
+                }
             }
+            return;
+        } catch (err) {
+            console.log("Store Error : ", err);
+            return this.sendError(
+                "Internal server error.Please try again later",
+                {},
+                500
+            )
         }
-        this.__is_paginate = false;
-        await this.sendResponse(
-            200,
-            'Store record successfully!.',
-            record
-        );
-        return;
     }
+
 
     /**
      * Display a single user.
@@ -133,7 +151,7 @@ class SocketRestController extends SocketController {
                 return hookResponse;
             }
         }
-        let record = await this.modal.getRecordBySlug(this.socket, this.params.id);
+        let record = await this.modal.getRecordById(this.socket, this.params.id);
         // after show hook
         if (_.isFunction(this.afterShowLoadModel)) {
             var afterHookResponse = await this.afterShowLoadModel(record);
