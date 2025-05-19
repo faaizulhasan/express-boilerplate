@@ -220,7 +220,7 @@ class UserController extends RestController {
         await this.modal.updateUser({ email: user.email }, update_params);
 
         //remove all api token except current api token
-        await UserApiToken.instance().deleteRecord(user.slug)
+        await UserApiToken.instance().deleteRecord(user.id)
 
         this.__is_paginate = false;
         this.__collection = false;

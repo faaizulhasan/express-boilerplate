@@ -29,7 +29,6 @@ class User {
 
         return {
             "id": record.id,
-            "slug": record.slug,
             "firstname": record.firstname || '',
             "lastname": record.lastname || '',
             "name": record.name || '',

@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const ChatMessages = sequelize.define("chat_messages", {
+    const ChatRoomUsers = sequelize.define("chat_room_users", {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -25,68 +25,50 @@ module.exports = (sequelize, Sequelize) => {
                 key: "id",
             },
         },
-        message_type: {
+        is_owner: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false,
+        },
+        is_subAdmin: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false,
+        },
+        status: {
             type: Sequelize.STRING(30),
             allowNull: false,
         },
-        badge_type: {
-            type: Sequelize.STRING(30),
-            allowNull: true,
-        },
-        file_type: {
-            type: Sequelize.STRING(30),
-            allowNull: true,
-        },
-        message: {
-            type: Sequelize.STRING,
-            allowNull: true,
-        },
-        file_name: {
-            type: Sequelize.STRING(300),
-            allowNull: true,
-        },
-        file_url: {
-            type: Sequelize.STRING,
-            allowNull: true,
-        },
-        file_thumb: {
-            type: Sequelize.STRING,
-            allowNull: true,
-        },
-        instance_type: {
-            type: Sequelize.INTEGER.UNSIGNED,
-            allowNull: true
-        },
-        instance_id: {
-            type: Sequelize.INTEGER.UNSIGNED,
-            allowNull: true
-        },
-        is_forwarded: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false,
-        },
-        is_oneTime: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false,
-        },
-        is_reply: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false,
-        },
-        reply_message_id: {
-            type: Sequelize.STRING(100),
-            allowNull: true,
-        },
-        is_disappear: {
-            type: Sequelize.BOOLEAN,
-            defaultValue: false,
-        },
-        disappear_timestamp: {
-            type: Sequelize.DATE,
-            allowNull: true,
+        unread_message_count: {
+            type: Sequelize.INTEGER,
+            defaultValue: 0,
         },
         is_anonymous: {
             type: Sequelize.BOOLEAN,
+            allowNull: true,
+        },
+        is_leaved: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        },
+        is_kicked: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+        },
+        is_blocked: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false,
+        },
+        blocked_timestamp: {
+            type: Sequelize.DATE,
+            allowNull: true,
+        },
+        is_visible: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: true,
+        },
+        last_message_timestamp: {
+            type: Sequelize.DATE,
             allowNull: true,
         },
         deletedAt: {
@@ -95,5 +77,5 @@ module.exports = (sequelize, Sequelize) => {
         },
     });
 
-    return ChatMessages;
+    return ChatRoomUsers;
 };

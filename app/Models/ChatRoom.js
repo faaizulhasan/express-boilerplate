@@ -1,10 +1,9 @@
 const RestModel = require("./RestModel");
-const _ = require("lodash")
-const { v4: uuidv4 } = require('uuid');
+const _ = require("lodash");
 
 class ChatRoom extends RestModel {
     constructor() {
-        super("chat_rooms")
+        super("chat_rooms");
     }
 
     softdelete() {
@@ -19,17 +18,39 @@ class ChatRoom extends RestModel {
 
     getFields() {
         return [
-            'title', 'image_url', "description", 'type', 'members', 'message_type', "message", 'file_name', 'file_url', 'file_thumb', 'is_forwaded', 'is_oneTime',
-            'is_reply', 'reply_message_slug', 'is_disappear', 'disappear_timestamp', 'is_anonymous',
+            "id",
+            "title",
+            "image_url",
+            "description",
+            "type",
+            "members",
+            "message_type",
+            "message",
+            "file_name",
+            "file_url",
+            "file_thumb",
+            "is_forwaded",
+            "is_oneTime",
+            "is_reply",
+            "reply_message_id",
+            "is_disappear",
+            "disappear_timestamp",
+            "is_anonymous",
         ];
     }
 
-
     showColumns() {
         return [
-            'id', 'slug', 'user_slug', "type", 'title', 'image_url', "description",
-            "can_memberEditGroup", "can_memberSendMessage", "can_memberAddMember",
-            'last_message_timestamp', 'createdAt'
+            "id",
+            "type",
+            "title",
+            "image_url",
+            "description",
+            "can_memberEditGroup",
+            "can_memberSendMessage",
+            "can_memberAddMember",
+            "last_message_timestamp",
+            "createdAt",
         ];
     }
 
@@ -38,17 +59,23 @@ class ChatRoom extends RestModel {
      */
     exceptUpdateField() {
         return [
-            'id', 'slug', 'user_slug', "type", "status", "member_limit", "createdAt"
+            "id",
+            "type",
+            "status",
+            "member_limit",
+            "createdAt",
         ];
     }
 
     async beforeCreateHook(request, params) {
-        params.slug = uuidv4();
-        params.user_slug = request.user.slug;
-        params.title = params?.title || CHAT_ROOM_TYPE_ENUM.SINGLE
-        params.type = params.type || CHAT_ROOM_TYPE_ENUM.SINGLE
-        params.image_url = ((params.type === CHAT_ROOM_TYPE_ENUM.GROUP) && params?.image_url) ? removeBaseUrl(params.image_url) : null;
-        params.member_limit = 1024
+        params.user_id = request.user.id;
+        params.title = params?.title || CHAT_ROOM_TYPE_ENUM.SINGLE;
+        params.type = params.type || CHAT_ROOM_TYPE_ENUM.SINGLE;
+        params.image_url =
+            params.type === CHAT_ROOM_TYPE_ENUM.GROUP && params?.image_url
+                ? removeBaseUrl(params.image_url)
+                : null;
+        params.member_limit = 1024;
         params.last_message_timestamp = null;
         params.createdAt = new Date();
     }
@@ -56,30 +83,31 @@ class ChatRoom extends RestModel {
     async afterCreateHook(record, request, params) {
         let result = record.toJSON();
         result.is_newRoom = result.type === CHAT_ROOM_TYPE_ENUM.SINGLE;
-        result.is_newGroup = result.type === CHAT_ROOM_TYPE_ENUM.GROUP
-        result.members = params?.members || []
-        await ChatRoomUser.instance().createRecord(request, result)
+        result.is_newGroup = result.type === CHAT_ROOM_TYPE_ENUM.GROUP;
+        result.members = params?.members || [];
+        await ChatRoomUser.instance().createRecord(request, result);
     }
 
-
-    async beforeEditHook(request, params, slug) {
+    async beforeEditHook(request, params, id) {
         let exceptUpdateField = this.exceptUpdateField();
-        exceptUpdateField.filter(exceptField => {
+        exceptUpdateField.filter((exceptField) => {
             delete params[exceptField];
         });
-        params.image_url = (params?.image_url) ? removeBaseUrl(params.image_url) : null;
+        params.image_url = params?.image_url
+            ? removeBaseUrl(params.image_url)
+            : null;
     }
 
-    async getGroupWithMembers(group_slug) {
+    async getGroupWithMembers(group_id) {
         const record = await this.orm.findOne({
             where: {
-                slug: group_slug,
+                id: group_id,
                 type: CHAT_ROOM_TYPE_ENUM.GROUP,
-                deletedAt: null
+                deletedAt: null,
             },
             include: {
                 model: ChatRoomUser.instance().getModel(),
-                as: 'ChatRoomUser_ChatRoomSlug',
+                as: "ChatRoomUser_ChatRoomSlug",
                 required: false,
                 where: {
                     // status: { [Op.ne]: CHAT_ROOM_STATUS_ENUM.REJECTED },
@@ -91,43 +119,43 @@ class ChatRoom extends RestModel {
                     as: "ChatRoomUser_UserSlug",
                     required: true,
                     where: {
-                        deletedAt: null
-                    }
-                }
-            }
-        })
-        return _.isEmpty(record) ? {} : record.toJSON()
+                        deletedAt: null,
+                    },
+                },
+            },
+        });
+        return _.isEmpty(record) ? {} : record.toJSON();
     }
 
-    async getRoomRecordWithUser(user_slug, chat_room_slug) {
+    async getRoomRecordWithUser(user_id, chat_room_id) {
         const record = await this.orm.findOne({
             where: {
-                slug: chat_room_slug,
-                deletedAt: null
+                id: chat_room_id,
+                deletedAt: null,
             },
             include: {
                 model: ChatRoomUser.instance().getModel(),
-                as: 'ChatRoomUser_ChatRoomSlug',
+                as: "ChatRoomUser_ChatRoomSlug",
                 required: true,
                 where: {
                     status: { [Op.ne]: CHAT_ROOM_STATUS_ENUM.REJECTED },
-                    user_slug: user_slug,
+                    user_id: user_id,
                     deletedAt: null,
                 },
-            }
-        })
-        return _.isEmpty(record) ? {} : record.toJSON()
+            },
+        });
+        return _.isEmpty(record) ? {} : record.toJSON();
     }
 
-    async getRoomRecordWithUserDetails(chat_room_slug) {
+    async getRoomRecordWithUserDetails(chat_room_id) {
         const record = await this.orm.findOne({
             where: {
-                slug: chat_room_slug,
-                deletedAt: null
+                id: chat_room_id,
+                deletedAt: null,
             },
             include: {
                 model: ChatRoomUser.instance().getModel(),
-                as: 'ChatRoomUser_ChatRoomSlug',
+                as: "ChatRoomUser_ChatRoomSlug",
                 required: false,
                 where: {
                     status: { [Op.ne]: CHAT_ROOM_STATUS_ENUM.REJECTED },
@@ -140,38 +168,35 @@ class ChatRoom extends RestModel {
                     as: "ChatRoomUser_UserSlug",
                     required: true,
                     where: {
-                        deletedAt: null
-                    }
-                }
-            }
-        })
-        return _.isEmpty(record) ? {} : record.toJSON()
+                        deletedAt: null,
+                    },
+                },
+            },
+        });
+        return _.isEmpty(record) ? {} : record.toJSON();
     }
 
-
-
-    async updateLastMessageTimeStamp(chat_room_slug) {
-        const record = await this.orm.update(
+    async updateLastMessageTimeStamp(chat_room_id) {
+        await this.orm.update(
             { last_message_timestamp: new Date() },
             {
                 where: {
-                    slug: chat_room_slug,
+                    id: chat_room_id,
                     deletedAt: null,
-                }
+                },
             }
         );
         return true;
     }
-
 }
 
-module.exports = ChatRoom
+module.exports = ChatRoom;
 
 const ChatRoomUser = require("./ChatRoomUser");
-const ChatMessages = require("./ChatMessages");
-const { Sequelize, Op } = require("../Database");
-// const BlockProfile = require("./BlockProfile");
-const { getValueArrayFromArrayOfObject, removeBaseUrl } = require("../Helper");
+const { Op } = require("../Database");
+const { removeBaseUrl } = require("../Helper");
 const User = require("./User");
-const { CHAT_ROOM_TYPE_ENUM, CHAT_ROOM_STATUS_ENUM } = require("../config/enum");
-
+const {
+    CHAT_ROOM_TYPE_ENUM,
+    CHAT_ROOM_STATUS_ENUM,
+} = require("../config/enum");

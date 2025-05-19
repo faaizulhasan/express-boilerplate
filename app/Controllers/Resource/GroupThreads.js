@@ -28,14 +28,14 @@ class ChatThreads {
         const user_record = record.ChatRoomUser_ChatRoomSlug_Self.find(item => item.user_slug === request.user.slug) || {};
 
         return {
-            "chat_room_slug": record.chat_room_slug,
+            "chat_room_id": record.chat_room_id,
             "image_url": getImageUrl(room_record.image_url),
             "room_name": room_record.title || '',
             "members": record.ChatRoomUser_ChatRoomSlug_Self.map(item => {
                 const member_record = item.ChatRoomUser_UserSlug
                 if (item.is_leaved || item.is_kicked) return null
                 return {
-                    "slug": member_record.slug,
+                    "id": member_record.id,
                     "name": member_record.name,
                     "image_url": getImageUrl(member_record.image_url),
                 }

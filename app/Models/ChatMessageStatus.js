@@ -1,10 +1,9 @@
 const RestModel = require("./RestModel");
-const _ = require("lodash")
-const { v4: uuidv4 } = require('uuid');
+const _ = require("lodash");
 
 class ChatMessageStatus extends RestModel {
     constructor() {
-        super("chat_message_status")
+        super("chat_message_status");
     }
 
     softdelete() {
@@ -18,15 +17,19 @@ class ChatMessageStatus extends RestModel {
      */
 
     getFields() {
-        return [
-            'message_slug', 'chat_room_slug',
-        ];
+        return ["message_id", "chat_room_id"];
     }
-
 
     showColumns() {
         return [
-            'id', 'slug', 'user_slug', 'message_slug', 'is_sender', 'is_read', 'read_timestamp', 'createdAt',
+            "id",
+            "id",
+            "user_id",
+            "message_id",
+            "is_sender",
+            "is_read",
+            "read_timestamp",
+            "createdAt",
         ];
     }
 
@@ -40,66 +43,61 @@ class ChatMessageStatus extends RestModel {
     async createRecord(request, params) {
         let record = [];
         let result = [];
-        let user_slug;
+        let user_id;
         let status_record;
-        const room_users = (await ChatRoomUser.instance().getRoomUsers(params.chat_room_slug)).map(item => item.user_slug);
+        const room_users = (
+            await ChatRoomUser.instance().getRoomUsers(params.chat_room_id)
+        ).map((item) => item.user_id);
 
-        console.log(room_users)
+        console.log(room_users);
         if (!_.isEmpty(room_users)) {
-
             for (let i = 0; i < room_users.length; i++) {
-                user_slug = room_users[i];
+                user_id = room_users[i];
                 status_record = {
-                    slug: uuidv4(),
-                    user_slug,
-                    chat_room_slug: params.chat_room_slug,
-                    message_slug: params.message_slug,
-                    is_sender: user_slug === request.user.slug,
-                    is_read: user_slug === request.user.slug,
-                    read_timestamp: user_slug === request.user.slug ? new Date() : null
-                }
+                    user_id,
+                    chat_room_id: params.chat_room_id,
+                    message_id: params.message_id,
+                    is_sender: user_id === request.user.id,
+                    is_read: user_id === request.user.id,
+                    read_timestamp: user_id === request.user.id ? new Date() : null,
+                };
                 record.push(status_record);
             }
             result = await this.orm.bulkCreate(record);
         }
 
-        return result.map(item => item.toJSON())
-
-
+        return result.map((item) => item.toJSON());
     }
 
-
-    async deleteThreadMessages(user_slug, chat_room_slug) {
-
+    async deleteThreadMessages(user_id, chat_room_id) {
         const record = await this.orm.update(
             { deletedAt: new Date() },
             {
                 where: {
-                    user_slug,
-                    chat_room_slug
-                }
+                    user_id,
+                    chat_room_id,
+                },
             }
         );
 
         return true;
-
     }
 
-
-    async deleteChatMessage(user_slug, message_slug) {
-        await this.orm.update({ deletedAt: new Date() }, {
-            where: {
-                user_slug: user_slug,
-                message_slug: message_slug,
-                deletedAt: null
+    async deleteChatMessage(user_id, message_id) {
+        await this.orm.update(
+            { deletedAt: new Date() },
+            {
+                where: {
+                    user_id: user_id,
+                    message_id: message_id,
+                    deletedAt: null,
+                },
             }
-        })
+        );
         return true;
     }
-
-
 }
 
-module.exports = ChatMessageStatus
+module.exports = ChatMessageStatus;
 
 const ChatRoomUser = require("./ChatRoomUser");

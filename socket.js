@@ -9,18 +9,18 @@ class Socket {
         this.io = io(server);
         this.io.use(SocketAuthentication.authenticate)
             .on('connection', async (socket) => {
-                const user_slug = socket.user.slug
-                socket.join('user_' + user_slug)
-                const user_rooms = await ChatRoomUser.instance().getUserRooms(user_slug);
-                console.log("User Rooms : ", user_rooms)
+                const user_id = socket.user.id;
+                socket.join("user_" + user_id);
+                const user_rooms = await ChatRoomUser.instance().getUserRooms(user_id);
+                console.log("User Rooms : ", user_rooms);
                 for (let i = 0; i < user_rooms.length; i++) {
-                    socket.join('room_' + user_rooms[i].chat_room_slug)
+                    socket.join("room_" + user_rooms[i].chat_room_id);
                 }
-                this.connection(socket)
+                this.connection(socket);
             })
 
     }
-    getIo(){
+    getIo() {
         return this.io;
     }
     connection(socket) {

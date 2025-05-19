@@ -22,7 +22,7 @@ class NewGroup {
 
     static jsonSchema(record, request) {
         return {
-            "chat_room_slug": record.slug,
+            "chat_room_id": record.id,
             "title": record.title || '',
             "image_url": getImageUrl(record?.image_url),
             "description": record?.description || '',

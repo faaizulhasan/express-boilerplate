@@ -23,7 +23,7 @@ class CreateGroup {
 
     static jsonSchema(record, request) {
         return {
-            "chat_room_slug": record.slug,
+            "chat_room_id": record.id,
             "image_url": getImageUrl(record?.image_url),
             "title": record.title || '',
             "description": record.description || ""
