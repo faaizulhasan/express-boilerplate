@@ -3,8 +3,7 @@ const ChatMessageStatus = require("../../../Models/ChatMessageStatus");
 const ChatRoom = require("../../../Models/ChatRoom");
 const ChatRoomUser = require("../../../Models/ChatRoomUser");
 const Notification = require("../../../Models/Notification");
-const Post = require("../../../Models/Post");
-const { POST_TYPE, NOTIFICATION_TYPES } = require("../../../config/constants");
+const { NOTIFICATION_TYPES } = require("../../../config/constants");
 const {
     CHAT_ROOM_TYPE_ENUM,
     MESSAGE_TYPE_ENUM,
