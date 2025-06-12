@@ -5,6 +5,10 @@ module.exports = {
     PASSWORD: process.env.DB_PASSWORD,
     DB: process.env.DB_NAME,
     DIALECT: process.env.DIALECT,
+    DIALECT_OPTIONS: {
+        charset: "utf8mb4",
+        collate: "utf8mb4_general_ci",
+    },
     pool: {
         max: 5,
         min: 0,
