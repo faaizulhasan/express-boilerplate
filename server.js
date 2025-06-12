@@ -118,7 +118,6 @@ httpServer.listen(process.env.BACKEND_PORT, () => {
 
 
             const admin_data = {
-                slug: uuidv4(),
                 user_type: ROLES.ADMIN,
                 name: "Admin",
                 email: "admin@yopmail.com",

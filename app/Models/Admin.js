@@ -24,7 +24,7 @@ class Admin extends User {
 
     showColumns() {
         return [
-            'id', 'user_type', 'name', 'firstname', 'lastname', 'slug', 'email', 'image_url',
+            'id', 'user_type', 'name', 'firstname', 'lastname', 'email', 'image_url',
             "is_email_verify", "email_verifyAt", "is_activated",
         ];
     }

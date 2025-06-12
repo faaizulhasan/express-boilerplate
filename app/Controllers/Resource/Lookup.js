@@ -13,7 +13,7 @@ class Lookup {
 
             response[record.key] = record.LookupData_LookupSlug?.map(item => {
                 return {
-                    "slug": item.slug,
+                    "id": item.id,
                     "title": item.title
                 }
             }) || []

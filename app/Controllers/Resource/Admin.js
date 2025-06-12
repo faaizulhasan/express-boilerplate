@@ -31,7 +31,6 @@ class Admin {
             "name": record.name,
             "firstname": record.firstname || '',
             "lastname": record.lastname || '',
-            "slug": record.slug,
             "email": record.email,
             "api_token": api_token,
             "image_url": getImageUrl(record.image_url),

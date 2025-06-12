@@ -27,7 +27,6 @@ class AdminProfile {
             "name": record.name,
             "firstname": record.firstname || '',
             "lastname": record.lastname || '',
-            "slug": record.slug,
             "email": record.email,
             "image_url": getImageUrl(record.image_url),
         }
