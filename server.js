@@ -152,14 +152,14 @@ httpServer.listen(process.env.BACKEND_PORT, () => {
                     title: "Privacy Policy",
                     slug: "privacy-policy",
                     content: "Lorem epsum",
-                    url: "https://trangotech.com/privacy-policy-terms-of-service/",
+                    url: "https://google.com",
                     createdAt: new Date()
                 },
                 {
                     title: "Terms And Conditions",
                     slug: "terms-conditions",
                     content: "Lorem epsum",
-                    url: "https://trangotech.com/privacy-policy-terms-of-service/",
+                    url: "https://google.com",
                     createdAt: new Date()
                 },
             ]
