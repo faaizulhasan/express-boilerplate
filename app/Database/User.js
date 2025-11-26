@@ -33,11 +33,11 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true
         },
         email: {
-            type: Sequelize.STRING(100),
+            type: Sequelize.STRING(200),
             allowNull: true,
         },
         mobile_no: {
-            type: Sequelize.STRING(15),
+            type: Sequelize.STRING(100),
             allowNull: true,
         },
         password: {

@@ -580,7 +580,53 @@ class UserController extends RestController {
             return this.sendError(e.message,{},400)
         }
     }
+    async deleteAccount({ request, response }){
+        try {
+            this.request = request;
+            this.response = response;
+            this.__is_paginate = false;
+            this.__collection = false;
 
+            if (!request.body.password){
+                throw new Error("Password is required");
+            }
+            let user = await this.modal.getUserByID(request.user.id);
+            if (!compareHash(request.body.password, user.password)){
+                throw new Error("Incorrect Password");
+            }
+            const user_id = request.user.id;
+            await this.modal.orm.update({
+                deletedAt: new Date(),
+                email: request.user.email +"-"+ new Date().getTime(),
+                mobile_no: request.user.mobile_no +"-"+ new Date().getTime(),
+            }, {
+                where: {
+                    id: user_id
+                }
+            });
+            if (request.user.login_type != "custom"){
+                await SocialUser.instance().getModel().update({
+                    deletedAt: new Date(),
+                    email: request.user.email +"-"+ new Date().getTime(),
+                    platform_id: null
+                },{
+                    where: {
+                        email: request.user.email
+                    }
+                });
+            }
+            await UserApiToken.instance().deleteRecord(user_id);
+
+            return this.sendResponse(
+                200,
+                "User Deleted Successfully",
+                {}
+            )
+        }catch (e) {
+            console.log(e)
+            return this.sendError(e.message,{},400);
+        }
+    }
 
 
 }
