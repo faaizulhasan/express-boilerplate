@@ -76,7 +76,23 @@ class RestModel {
         if (_.isFunction(this.indexQueryHook)) {
             await this.indexQueryHook(query, request, params);
         }
-
+        if (_.isFunction(this.searchColumns) && request.query.search) {
+            let columns = this.searchColumns();
+            let searchConditions = [];
+            if (columns.length > 0) {
+                columns.forEach(column => {
+                    searchConditions.push({
+                        [column]: {
+                            [Op.like]: `%${request.query.search}%`
+                        }
+                    })
+                })
+                query.where = {
+                    ...query.where,
+                    [Op.or]: searchConditions
+                }
+            }
+        }
         query = {
             ...query,
             ...(is_paginate && { limit: limit, offset: page * limit }),
