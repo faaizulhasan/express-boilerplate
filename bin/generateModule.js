@@ -166,6 +166,9 @@ class ${moduleName} extends RestModel {
         return [${fields.map(item => `"${item}"`).join(', ')}];
     }
     
+    searchColumns() {
+        return [${(fields.filter(item => !notUpdateColumns.includes(item))).map(item => `"${item}"`).join(', ')}];
+    }
     /**
      * Hook for manipulate query of index result
      * @param {current mongo query} query

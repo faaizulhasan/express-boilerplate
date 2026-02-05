@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36cbbfa4-3e72-44cd-b4ea-558e15ee9881" name="Changes" comment="+ add delete account functionality">
+    <list default="true" id="36cbbfa4-3e72-44cd-b4ea-558e15ee9881" name="Changes" comment="+ add searchColumn Functionality">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/RestModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/RestModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/generateModule.js" beforeDir="false" afterPath="$PROJECT_DIR$/bin/generateModule.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,18 +25,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -55,7 +55,8 @@
       <workItem from="1764049511376" duration="38000" />
       <workItem from="1764050004936" duration="27000" />
       <workItem from="1764133128446" duration="83000" />
-      <workItem from="1770173096591" duration="364000" />
+      <workItem from="1770173096591" duration="434000" />
+      <workItem from="1770268415895" duration="101000" />
     </task>
     <task id="LOCAL-00001" summary="+ update pages link">
       <option name="closed" value="true" />
@@ -73,7 +74,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764133202393</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="+ add searchColumn Functionality">
+      <option name="closed" value="true" />
+      <created>1770173495499</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1770173495499</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -82,6 +91,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="+ update pages link" />
     <MESSAGE value="+ add delete account functionality" />
-    <option name="LAST_COMMIT_MESSAGE" value="+ add delete account functionality" />
+    <MESSAGE value="+ add searchColumn Functionality" />
+    <option name="LAST_COMMIT_MESSAGE" value="+ add searchColumn Functionality" />
   </component>
 </project>
