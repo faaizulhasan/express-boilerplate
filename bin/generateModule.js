@@ -190,9 +190,6 @@ class ${moduleName} extends RestModel {
             delete params[exceptField];
         });
     }
-    async beforeEditHook(request, params, slug) {
-   
-    }
 
 }
 
