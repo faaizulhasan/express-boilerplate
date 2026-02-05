@@ -4,6 +4,7 @@ const _ = require("lodash");
 const moment = require("moment");
 const { baseUrl } = require("../Helper/index");
 const db = require("../Database/index");
+const {Op} = require("sequelize");
 const constants = require("../config/constants");
 
 class RestModel {
