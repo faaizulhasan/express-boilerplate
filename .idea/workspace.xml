@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="36cbbfa4-3e72-44cd-b4ea-558e15ee9881" name="Changes" comment="+ add searchColumn Functionality">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/RestModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/RestModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Libraries/PushNotification/Firebase.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Libraries/PushNotification/Firebase.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Notification.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Notification.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +59,8 @@
       <workItem from="1770173096591" duration="434000" />
       <workItem from="1770268415895" duration="175000" />
       <workItem from="1770269316250" duration="59000" />
-      <workItem from="1770270485308" duration="18000" />
+      <workItem from="1770270485308" duration="31000" />
+      <workItem from="1770530927532" duration="42000" />
     </task>
     <task id="LOCAL-00001" summary="+ update pages link">
       <option name="closed" value="true" />
@@ -100,7 +102,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770268562153</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="+ add searchColumn Functionality">
+      <option name="closed" value="true" />
+      <created>1770270507302</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1770270507302</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

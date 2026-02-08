@@ -5,6 +5,7 @@ const PushNotification = require('../Libraries/PushNotification/Index');
 const User = require("./User");
 const UserApiToken = require("./UserApiToken");
 const {Op} = require("sequelize");
+const {NOTIFICATION_TYPES, ROLES} = require('../config/enum');
 
 class Notification extends RestModel {
     constructor() {
@@ -126,6 +127,57 @@ class Notification extends RestModel {
         }
         let count = await this.orm.count(totalQuery);
         return count;
+    }
+
+    async sendAdminNotification(request) {
+        let allUsers = await User.instance().getModel().findAll({
+            attributes: ["id", "push_notification"],
+            where: {
+                deletedAt: null,
+                user_type: ROLES.USER
+            },
+            include: [
+                {
+                    model: UserApiToken.instance().getModel(),
+                    as: "UserApiToken_Slug_Single",
+                    attributes: ['device_token'],
+                    where: {deletedAt: null},
+                    order: [['createdAt', 'DESC']]
+                }
+            ],
+            raw: true,
+            nest: true
+        });
+
+        if (!allUsers.length) return true;
+        let push_notification_tokens = [];
+        const notifications = allUsers.map((user) => {
+            if (user.push_notification) {
+                push_notification_tokens.push(user?.UserApiToken_Slug_Single?.device_token);
+            }
+            return {
+                user_id: user.id,
+                type: NOTIFICATION_TYPES.ADMIN_NOTIFICATION,
+                title: request?.body?.title,
+                message: request?.body?.message,
+                payload: JSON.stringify({
+                    title: request?.body?.title,
+                    message: request?.body?.message
+                })
+            }
+        });
+        await this.orm.bulkCreate(notifications, {validate: false});
+        if (push_notification_tokens.length > 0) {
+            let push = await PushNotification.instance().sendPushNotificationMultiple(push_notification_tokens, {
+                title: request?.body?.title,
+                body: request?.body?.message
+            }, {
+                title: request?.body?.title,
+                body: request?.body?.message
+            })
+            console.log("push===>", push);
+        }
+        return true;
     }
 }
 
