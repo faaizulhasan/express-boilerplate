@@ -22,7 +22,7 @@ module.exports = {
     STATIC_PAGE_ID: "c19c2f29-8e79-471c-b01d-e88d806bc0a7",
 
     USER_UPLOAD_DIRECTORY: 'user',
-
+    OTP_EXPIRY_TIME_IN_MINUTES: 1, // OTP expiry time in minutes
     NOTIFICATION_DRIVER: process.env.NOTIFICATION_DRIVER || "Firebase",
     SERVICE_ACCOUNT: {
 

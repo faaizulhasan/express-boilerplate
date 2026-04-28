@@ -1,6 +1,6 @@
 const _ = require("lodash")
 const { v4: uuidv4 } = require('uuid');
-
+const moment = require("moment");
 const RestModel = require("./RestModel");
 const emailHandler = require("../Libraries/EmailHandler/EmailHandler");
 const { generateOTP } = require("../Helper");
@@ -88,8 +88,7 @@ class UserOTP extends RestModel {
 
         if (type === OTP_VERIFICATION_TYPE.EMAIL) {
             conditions.email = params.email;
-        }
-        else {
+        } else {
             conditions.mobile_no = params.mobile_no
         }
 
@@ -97,8 +96,11 @@ class UserOTP extends RestModel {
             where: conditions,
             order: [['createdAt', 'DESC']],
         })
+        if (!_.isEmpty(record) && otp === '000000' && process.env.APP_ENV !== 'production') {
+            return {bypass: true};
+        }
 
-        if (_.isEmpty(record) || (otp != '000000' && otp != record?.toJSON().otp)) return {}
+        if (_.isEmpty(record) || (otp != record?.toJSON().otp) || moment().diff(moment(record?.toJSON().createdAt), 'minutes') > constants.OTP_EXPIRY_TIME_IN_MINUTES) return {}
 
         return record.toJSON()
 
