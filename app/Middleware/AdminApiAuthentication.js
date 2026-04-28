@@ -25,7 +25,18 @@ class AdminApiAuthentication {
 
         //decode base64 token
         authorization = Buffer.from(authorization, 'base64').toString('ascii')
-
+        //verify jwt
+        try {
+            jwt_data = await jwt.verify(authorization, constants.JWT_SECRET)
+        } catch (err) {
+            let res = {
+                code: 401,
+                message: "Invalid authorization header",
+                data: {}
+            }
+            response.status(401).send(res);
+            return;
+        }
 
         //get user by authorization header
         let user = await AdminModel.instance().getAdminByApiToken(authorization);
@@ -42,18 +53,7 @@ class AdminApiAuthentication {
             return;
         }
         console.log('authorization', authorization);
-        //verify jwt
-        try {
-            jwt_data = await jwt.verify(authorization, constants.JWT_SECRET)
-        } catch (err) {
-            let res = {
-                code: 401,
-                message: "Invalid authorization header",
-                data: {}
-            }
-            response.status(401).send(res);
-            return;
-        }
+
 
         request.user = user
         request.authorization = authorization

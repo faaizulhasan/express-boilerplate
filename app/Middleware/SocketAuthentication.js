@@ -27,23 +27,6 @@ class SocketAuthentication {
 
         //decode base64 token
         authorization = Buffer.from(authorization, 'base64').toString('ascii')
-
-
-        //get user by authorization header
-        let user = await UserModel.instance().getUserByApiToken(authorization);
-
-        console.log("Middleware user : ", user)
-        console.log('authorization', authorization);
-        if (_.isEmpty(user)) {
-            let res = {
-                code: 401,
-                message: "Invalid authorization header",
-                data: {}
-            }
-            next(new Error(res))
-            return
-        }
-        console.log('authorization', authorization);
         //verify jwt
         try {
             jwt_data = await jwt.verify(authorization, constants.JWT_SECRET)
@@ -56,6 +39,21 @@ class SocketAuthentication {
             next(new Error(res))
             return;
         }
+
+        //get user by authorization header
+        let user = await UserModel.instance().getUserByApiToken(authorization);
+
+        if (_.isEmpty(user)) {
+            let res = {
+                code: 401,
+                message: "Invalid authorization header",
+                data: {}
+            }
+            next(new Error(res))
+            return
+        }
+        console.log('authorization', authorization);
+
         //check email is verified
         if (!user.is_email_verify && (constants.EMAIL_VERIFICATION == 1)) {
             let res = {

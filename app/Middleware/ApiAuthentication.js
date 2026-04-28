@@ -26,7 +26,18 @@ module.exports = async (request, response, next) => {
 
     //decode base64 token
     authorization = Buffer.from(authorization, 'base64').toString('ascii')
-
+    //verify jwt
+    try {
+        jwt_data = await jwt.verify(authorization, constants.JWT_SECRET)
+    } catch (err) {
+        let res = {
+            code: 401,
+            message: "Invalid authorization header",
+            data: {}
+        }
+        response.status(401).send(res);
+        return;
+    }
 
     //get user by authorization header
     let user = await UserModel.instance().getUserByApiToken(authorization);
@@ -41,18 +52,7 @@ module.exports = async (request, response, next) => {
         response.status(401).send(res);
         return;
     }
-    //verify jwt
-    try {
-        jwt_data = await jwt.verify(authorization, constants.JWT_SECRET)
-    } catch (err) {
-        let res = {
-            code: 401,
-            message: "Invalid authorization header",
-            data: {}
-        }
-        response.status(401).send(res);
-        return;
-    }
+
     //check email is verified
     if (!user.is_email_verify && (constants.EMAIL_VERIFICATION == 1)) {
         let res = {
