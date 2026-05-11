@@ -1,42 +1,52 @@
-const nodeMailer = require("nodemailer")
-const constants = require("../../config/constants")
+const nodeMailer = require("nodemailer");
+const constants = require("../../config/constants");
 
 class Transporter {
-
     constructor() {
-        this.transporter = (constants.MAIL_SYSTEM == 'nodemailer') ? nodeMailer.createTransport({
-            host: constants.MAIL_HOST,
-            port: constants.MAIL_PORT,
-            secure: true,
-            requireTLS: true,
-            auth: {
-                user: constants.MAIL_EMAIL,
-                pass: constants.MAIL_PASSWORD
-            },
-            tls: {
-                rejectUnauthorized: false
-            }
-        }) : nodeMailer.createTransport({
-            host: "smtp.sendgrid.net",
-            port: 587,
-            auth: {
-                user: "apikey",
-                pass: constants.MAIL_API_KEY
-            }
-        });
+
+        if (constants.MAIL_SYSTEM === "nodemailer") {
+            this.transporter = nodeMailer.createTransport({
+                host: constants.MAIL_HOST,
+                port: Number(constants.MAIL_PORT),
+                // true only for 465
+                secure: Number(constants.MAIL_PORT) === 465,
+                auth: {
+                    user: constants.MAIL_EMAIL,
+                    pass: constants.MAIL_PASSWORD
+                },
+                tls: {
+                    rejectUnauthorized: false
+                }
+            });
+
+        } else {
+            // SendGrid SMTP
+            this.transporter = nodeMailer.createTransport({
+                host: "smtp.sendgrid.net",
+                port: 587,
+                secure: false,
+                auth: {
+                    user: "apikey",
+                    pass: constants.MAIL_API_KEY
+                }
+            });
+
+        }
     }
 
     async sendMail(mailOptions) {
-        return new Promise((res, rej) => {
-            this.transporter.sendMail(mailOptions, (err, info) => {
-                if (err) rej(err);
-                else res();
-            })
-        })
+        try {
+            const info = this.transporter.sendMail(mailOptions);
+            return {
+                success: true,
+                messageId: info.messageId,
+                response: info.response
+            };
+        } catch (error) {
+            console.error("Mail Error:", error);
+            //throw error;
+        }
     }
-
-
-
 }
 
-module.exports = Transporter
+module.exports = Transporter;
