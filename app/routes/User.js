@@ -1,7 +1,5 @@
 const express = require("express")
 const router = express.Router();
-const multer = require("multer");
-const upload = multer()
 
 const checkApiToken = require('../Middleware/CheckApiToken');
 const apiAuthentication = require("../Middleware/ApiAuthentication");
@@ -68,7 +66,7 @@ router.post('/verify-otp/forgot-password', checkApiToken, (req, res) => (new Use
 
 
 /* User Configure Account Routes */
-router.post('/', checkApiToken, upload.any(), (req, res) => (new UserController()).store({ request: req, response: res }))
+router.post('/', checkApiToken, (req, res) => (new UserController()).store({ request: req, response: res }))
 router.post('/login', checkApiToken, (req, res) => (new UserController()).login({ request: req, response: res }))
 router.patch('/device-token', apiAuthentication, (req, res) => (new UserApiTokenController()).update({ request: req, response: res }))
 router.post('/social-login', checkApiToken, (req, res) => (new UserController()).socialLogin({ request: req, response: res }))
