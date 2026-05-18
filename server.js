@@ -3,11 +3,9 @@ const http = require('http');
 const path = require('path');
 const cors = require("cors");
 const bodyParser = require('body-parser');
-const multer = require('multer');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
-const upload = multer();
 const { v4: uuidv4 } = require('uuid');
 const process = require('process');
 const morgan = require("morgan");
@@ -41,7 +39,6 @@ if (process.env.APP_ENV == "production"){
     console.log = function () {};
 }
 /**App Setup */
-app.use(upload.any());
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
